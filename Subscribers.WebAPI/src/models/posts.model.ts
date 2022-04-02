@@ -1,6 +1,8 @@
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
 import { MaxLength } from 'class-validator';
-import { User } from "./users.model";
+import { User } from './users.model';
+import { Like } from './likes.model';
+import { Comment } from './comments.model';
 
 @Table({ tableName: 'posts', timestamps: false })
 export class Post extends Model<Post> {
@@ -25,4 +27,10 @@ export class Post extends Model<Post> {
 
     @BelongsTo(() => User)
     owner: Post;
+
+    @HasMany(() => Like)
+    likes: Like[];
+
+    @HasMany(() => Comment)
+    comments: Comment[];
 }

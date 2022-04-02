@@ -3,7 +3,7 @@ import { Role } from './roles.model';
 import { User } from './users.model';
 
 @Table({ tableName: 'user_roles', timestamps: false })
-export class UserRolesModel extends Model<UserRolesModel> {
+export class UserRoles extends Model<UserRoles> {
 
     @ForeignKey(() => User)
     @Column({ type: DataType.INTEGER, primaryKey: true, allowNull: false })

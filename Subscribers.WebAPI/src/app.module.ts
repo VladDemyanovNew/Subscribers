@@ -2,12 +2,15 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
-import {User} from "./models/users.model";
+import { User } from './models/users.model';
 import { RolesModule } from './modules/roles/roles.module';
 import { Role } from './models/roles.model';
-import { UserRolesModel } from './models/user-roles.model';
+import { UserRoles } from './models/user-roles.model';
 import { PostsModule } from './modules/posts/posts.module';
 import { Post } from './models/posts.model';
+import { Like } from './models/likes.model';
+import { Subscription } from './models/subscriptions.model';
+import { Comment } from './models/comments.model';
 
 @Module({
   imports: [
@@ -25,8 +28,11 @@ import { Post } from './models/posts.model';
         models: [
             User,
             Role,
-            UserRolesModel,
+            UserRoles,
             Post,
+            Like,
+            Subscription,
+            Comment,
         ],
       }),
       UsersModule,
