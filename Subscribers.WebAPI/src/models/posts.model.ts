@@ -1,0 +1,28 @@
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { MaxLength } from 'class-validator';
+import { User } from "./users.model";
+
+@Table({ tableName: 'posts', timestamps: false })
+export class Post extends Model<Post> {
+
+    @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false })
+    id: number;
+
+    @MaxLength(4000, { message: 'Максимальная длина 4000' })
+    @Column({ type: DataType.STRING })
+    content: string;
+
+    @MaxLength(32, { message: 'Максимальная длина 32' })
+    @Column({ type: DataType.STRING, allowNull: false })
+    title: string;
+
+    @Column({ type: DataType.STRING })
+    imagePath: string;
+
+    @ForeignKey(() => User)
+    @Column({ type: DataType.INTEGER, allowNull: false })
+    ownerId: number;
+
+    @BelongsTo(() => User)
+    owner: Post;
+}
