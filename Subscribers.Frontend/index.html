@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
+</head>
+<body>
+    <input type="text" id="name">
+    <button onclick="onSend()">Send</button>
+
+    <script type="text/javascript">
+
+        socket = io('http://localhost:3000');
+
+        socket.on('msgToClient', (message) => {
+            console.log(message);
+        });
+
+        function onSend() {
+            const message = {
+                name: document. querySelector('input'). value,
+                data: `hello`,
+            };
+            console.log(message);
+            socket.emit('message', message);
+        }
+    </script>
+</body>
+</html>

@@ -11,6 +11,7 @@ import { Post } from './models/posts.model';
 import { Like } from './models/likes.model';
 import { Subscription } from './models/subscriptions.model';
 import { Comment } from './models/comments.model';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
@@ -39,5 +40,6 @@ import { Comment } from './models/comments.model';
       RolesModule,
       PostsModule,
   ],
+  providers: [AppGateway],
 })
 export class AppModule {}
