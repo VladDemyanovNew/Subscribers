@@ -6,8 +6,7 @@ import {
   WebSocketGateway, WebSocketServer
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { UsersService } from "./modules/users/users.service";
-import {RolesService} from "./modules/roles/roles.service";
+import { RolesService } from './modules/roles/roles.service';
 
 @WebSocketGateway({
   cors: {
@@ -35,10 +34,10 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   }
 
   public handleConnection(client: Socket, ...args: any[]): void {
-    console.log(`Client connected: ${client.id}`);
+    console.log(`Client connected: ${ client.id }`);
   }
 
   public handleDisconnect(client: Socket): void {
-    console.log(`Client disconnected: ${client.id}`);
+    console.log(`Client disconnected: ${ client.id }`);
   }
 }
