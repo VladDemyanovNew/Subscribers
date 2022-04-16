@@ -1,8 +1,7 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from '../../common/models/users.model';
 import { Tokens } from '../../common/types/tokens.type';
-import { AuthGuard } from '@nestjs/passport';
 import { GetJwtAccessPayload } from '../../common/decorators/get-jwt-access-payload';
 import { JwtPayload } from '../../common/types/jwt-payload.type';
 import { GetJwtRefreshPayload } from '../../common/decorators/get-jwt-refresh-payload';
