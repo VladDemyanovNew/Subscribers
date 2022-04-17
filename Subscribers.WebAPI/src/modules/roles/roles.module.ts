@@ -14,4 +14,5 @@ import { UserRoles } from '../../common/models/user-roles.model';
     RolesService,
   ],
 })
-export class RolesModule {}
+export class RolesModule {
+}

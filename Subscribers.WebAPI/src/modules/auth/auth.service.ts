@@ -1,4 +1,4 @@
-import { ForbiddenException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../../common/models/users.model';
@@ -21,7 +21,7 @@ export class AuthService {
   public async signup(userSignupData: User): Promise<Tokens> {
     const doesUserExist = !isNil(await this.userService.findByEmail(userSignupData.email));
     if (doesUserExist) {
-      throw new ForbiddenException(`User with email='${userSignupData.email}' already exists`);
+      throw new UnauthorizedException(`User with email='${ userSignupData.email }' already exists`);
     }
 
     const hashPassword = await bcrypt.hash(userSignupData.password, 3);
@@ -33,6 +33,7 @@ export class AuthService {
     const tokens = await this.generateTokens({
       sub: user.id,
       email: user.email,
+      roles: user.roles,
     });
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
@@ -42,15 +43,19 @@ export class AuthService {
   public async signin(userSigninData: User): Promise<Tokens> {
     const user = await this.userService.findByEmail(userSigninData.email);
     if (!user) {
-      throw new ForbiddenException(`User with email='${userSigninData.email}' is not found`);
+      throw new UnauthorizedException(`User with email='${ userSigninData.email }' is not found`);
     }
 
     const doesPasswordValid = await bcrypt.compare(userSigninData.password, user.password);
     if (!doesPasswordValid) {
-      throw new ForbiddenException('Password is invalid');
+      throw new UnauthorizedException('Password is invalid');
     }
 
-    const tokens = await this.generateTokens({ sub: user.id, email: user.email });
+    const tokens = await this.generateTokens({
+      sub: user.id,
+      email: user.email,
+      roles: user.roles,
+    });
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
     return tokens;
@@ -69,19 +74,19 @@ export class AuthService {
   public async refreshToken(jwtRefreshPayload: JwtRefreshPayload): Promise<Tokens> {
     const user = await this.userService.findById(jwtRefreshPayload.sub);
     if (!user) {
-      throw new ForbiddenException('User is not found');
+      throw new UnauthorizedException('User is not found');
     }
 
-    if (!user.refreshToken) {
-      throw new ForbiddenException('Refresh token is not valid');
-    }
-
-    const doesRefreshTokenValid = await argon.verify(user.refreshToken, jwtRefreshPayload.refreshToken);
+    const doesRefreshTokenValid = user.refreshToken && await argon.verify(user.refreshToken, jwtRefreshPayload.refreshToken);
     if (!doesRefreshTokenValid) {
-      throw new ForbiddenException('Refresh token is not valid');
+      throw new UnauthorizedException('Refresh token is not valid');
     }
 
-    const tokens = await this.generateTokens({ sub: user.id, email: user.email });
+    const tokens = await this.generateTokens({
+      sub: user.id,
+      email: user.email,
+      roles: user.roles,
+    });
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
     return tokens;
@@ -107,7 +112,6 @@ export class AuthService {
 
   private async updateRefreshToken(userId: number, refreshToken: string): Promise<void> {
     const hashRefreshToken = await argon.hash(refreshToken);
-
     const user = await this.userService.findById(userId);
     user.refreshToken = hashRefreshToken;
     await user.save();

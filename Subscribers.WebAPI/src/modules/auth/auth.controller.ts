@@ -2,9 +2,9 @@ import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs
 import { AuthService } from './auth.service';
 import { User } from '../../common/models/users.model';
 import { Tokens } from '../../common/types/tokens.type';
-import { GetJwtAccessPayload } from '../../common/decorators/get-jwt-access-payload';
+import { GetJwtAccessPayload } from '../../common/decorators/access-token.decorator';
 import { JwtPayload } from '../../common/types/jwt-payload.type';
-import { GetJwtRefreshPayload } from '../../common/decorators/get-jwt-refresh-payload';
+import { GetJwtRefreshPayload } from '../../common/decorators/refresh-token.decorator';
 import { JwtRefreshPayload } from '../../common/types/jwt-refresh-payload.type';
 import { JwtAccessAuthGuard } from './guards/jwt-access-auth.guard';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-auth.guard';

@@ -5,11 +5,11 @@ import { User } from './users.model';
 @Table({ tableName: 'user_roles', timestamps: false })
 export class UserRoles extends Model<UserRoles> {
 
-    @ForeignKey(() => User)
-    @Column({ type: DataType.INTEGER, primaryKey: true, allowNull: false })
-    userId: number;
+  @ForeignKey(() => User)
+  @Column({ type: DataType.INTEGER, primaryKey: true, allowNull: false })
+  userId: number;
 
-    @ForeignKey(() => Role)
-    @Column({ type: DataType.INTEGER, primaryKey: true, allowNull: false })
-    roleId: number;
+  @ForeignKey(() => Role)
+  @Column({ type: DataType.INTEGER, primaryKey: true, allowNull: false })
+  roleId: number;
 }

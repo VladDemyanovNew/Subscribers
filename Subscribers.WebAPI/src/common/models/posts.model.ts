@@ -7,30 +7,30 @@ import { Comment } from './comments.model';
 @Table({ tableName: 'posts', timestamps: false })
 export class Post extends Model<Post> {
 
-    @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false })
-    id: number;
+  @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false })
+  id: number;
 
-    @MaxLength(4000, { message: 'Максимальная длина 4000' })
-    @Column({ type: DataType.STRING })
-    content: string;
+  @MaxLength(4000, { message: 'Максимальная длина 4000' })
+  @Column({ type: DataType.STRING })
+  content: string;
 
-    @MaxLength(32, { message: 'Максимальная длина 32' })
-    @Column({ type: DataType.STRING, allowNull: false })
-    title: string;
+  @MaxLength(32, { message: 'Максимальная длина 32' })
+  @Column({ type: DataType.STRING, allowNull: false })
+  title: string;
 
-    @Column({ type: DataType.STRING })
-    imagePath: string;
+  @Column({ type: DataType.STRING })
+  imagePath: string;
 
-    @ForeignKey(() => User)
-    @Column({ type: DataType.INTEGER, allowNull: false })
-    ownerId: number;
+  @ForeignKey(() => User)
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  ownerId: number;
 
-    @BelongsTo(() => User)
-    owner: Post;
+  @BelongsTo(() => User)
+  owner: Post;
 
-    @HasMany(() => Like)
-    likes: Like[];
+  @HasMany(() => Like)
+  likes: Like[];
 
-    @HasMany(() => Comment)
-    comments: Comment[];
+  @HasMany(() => Comment)
+  comments: Comment[];
 }

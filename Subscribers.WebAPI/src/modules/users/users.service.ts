@@ -33,10 +33,10 @@ export class UsersService {
   }
 
   public async findByEmail(email: string): Promise<User> {
-    return await this.userModel.findOne({ where: { email: email } });
+    return await this.userModel.findOne({ where: { email: email }, include: { all: true } });
   }
 
   public async findById(userId: number): Promise<User> {
-    return await this.userModel.findOne({ where: { id: userId } });
+    return await this.userModel.findOne({ where: { id: userId }, include: { all: true } });
   }
 }

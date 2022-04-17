@@ -17,7 +17,7 @@ export class User extends Model<User> {
   @IsNotEmpty()
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   email: string;
-  
+
   @IsString()
   @IsNotEmpty()
   @Length(5, 32)

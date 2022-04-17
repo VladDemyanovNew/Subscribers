@@ -2,13 +2,18 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get, HttpCode, HttpStatus,
+  Get,
+  HttpCode,
+  HttpStatus,
   Param,
-  Post, UseGuards,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from '../../common/models/users.model';
 import { JwtAccessAuthGuard } from '../auth/guards/jwt-access-auth.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { RoleName } from '../../common/enums/role-name';
 
 @Controller('users')
 export class UsersController {
@@ -22,13 +27,16 @@ export class UsersController {
     return await this.usersService.create(userCreateData);
   }
 
+  @Roles(RoleName.USER)
+  @UseGuards(JwtAccessAuthGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAccessAuthGuard)
   public async getAll(): Promise<User[]> {
     return await this.usersService.getAll();
   }
 
+  @Roles(RoleName.ADMIN)
+  @UseGuards(JwtAccessAuthGuard)
   @Get(':username')
   @HttpCode(HttpStatus.OK)
   public async findOne(@Param('username') username: string): Promise<User> {

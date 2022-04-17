@@ -5,12 +5,12 @@ import { UserRoles } from './user-roles.model';
 @Table({ tableName: 'roles', timestamps: false })
 export class Role extends Model<Role> {
 
-    @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false })
-    id: number;
+  @Column({ type: DataType.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false })
+  id: number;
 
-    @Column({ type: DataType.STRING, unique: true, allowNull: false })
-    name: string;
+  @Column({ type: DataType.STRING, unique: true, allowNull: false })
+  name: string;
 
-    @BelongsToMany(() => User, () => UserRoles)
-    users: User[];
+  @BelongsToMany(() => User, () => UserRoles)
+  users: User[];
 }
