@@ -1,5 +1,5 @@
-import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
-import { MaxLength } from 'class-validator';
+import { Column, DataType, ForeignKey, Model, NotEmpty, NotNull, Table } from 'sequelize-typescript';
+import { IsNotEmpty, MaxLength } from 'class-validator';
 import { User } from './users.model';
 import { Post } from './posts.model';
 
@@ -14,10 +14,12 @@ export class Comment extends Model<Comment> {
   message: string;
 
   @ForeignKey(() => User)
+  @IsNotEmpty()
   @Column({ type: DataType.INTEGER, allowNull: false, onDelete: 'NO ACTION' })
   ownerId: number;
 
   @ForeignKey(() => Post)
+  @IsNotEmpty()
   @Column({ type: DataType.INTEGER, allowNull: false, onDelete: 'CASCADE' })
   postId: number;
 }

@@ -1,5 +1,5 @@
 import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
-import { MaxLength } from 'class-validator';
+import { IsNotEmpty, MaxLength } from 'class-validator';
 import { User } from './users.model';
 import { Like } from './likes.model';
 import { Comment } from './comments.model';
@@ -22,6 +22,7 @@ export class Post extends Model<Post> {
   imagePath: string;
 
   @ForeignKey(() => User)
+  @IsNotEmpty()
   @Column({ type: DataType.INTEGER, allowNull: false })
   ownerId: number;
 

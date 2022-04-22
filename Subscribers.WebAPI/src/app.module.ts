@@ -13,6 +13,7 @@ import { Subscription } from './common/models/subscriptions.model';
 import { Comment } from './common/models/comments.model';
 import { AppGateway } from './app.gateway';
 import { AuthModule } from './modules/auth/auth.module';
+import { CommentsModule } from './modules/comments/comments.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { AuthModule } from './modules/auth/auth.module';
     RolesModule,
     PostsModule,
     AuthModule,
+    CommentsModule,
   ],
   providers: [AppGateway],
 })
