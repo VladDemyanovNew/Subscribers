@@ -6,6 +6,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AccessTokenStrategy } from './strategies/access-token.strategy';
 import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
+import { DropboxService } from '../dropbox/dropbox.service';
 
 @Module({
   controllers: [AuthController],
@@ -13,6 +14,7 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
     AuthService,
     AccessTokenStrategy,
     RefreshTokenStrategy,
+    DropboxService,
   ],
   imports: [
     forwardRef(() => UsersModule),

@@ -8,6 +8,8 @@ import { Tokens } from '../../common/types/tokens.type';
 import { JwtPayload } from '../../common/types/jwt-payload.type';
 import { JwtRefreshPayload } from '../../common/types/jwt-refresh-payload.type';
 import * as argon from 'argon2';
+import { Express } from 'express';
+import { DropboxService } from '../dropbox/dropbox.service';
 
 @Injectable()
 export class AuthService {
@@ -15,10 +17,11 @@ export class AuthService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
+    private dropboxService: DropboxService,
   ) {
   }
 
-  public async signup(userSignupData: User): Promise<Tokens> {
+  public async signup(userSignupData: User, avatar: Express.Multer.File | undefined): Promise<Tokens> {
     const doesUserExist = !isNil(await this.userService.findByEmail(userSignupData.email));
     if (doesUserExist) {
       throw new UnauthorizedException(`User with email='${ userSignupData.email }' already exists`);
@@ -29,6 +32,14 @@ export class AuthService {
       ...userSignupData,
       password: hashPassword,
     });
+
+    if (avatar) {
+      const uploadedImageLink = await this.dropboxService.uploadFile(avatar);
+      user.avatarPath = uploadedImageLink;
+      await user.save();
+    } else {
+      // TODO: save user with default avatar
+    }
 
     const tokens = await this.generateTokens({
       sub: user.id,

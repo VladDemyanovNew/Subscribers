@@ -4,13 +4,12 @@ import { PostDto } from '../../common/dtos/post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { DropboxService } from '../dropbox/dropbox.service';
+import { parsePostToDto } from '../../common/helpers/post,helper';
 
 @Controller('posts')
 export class PostsController {
 
-  constructor(
-    private postService: PostsService,
-    private dropboxService: DropboxService) {
+  constructor(private postService: PostsService) {
   }
 
   @Get()
@@ -26,10 +25,6 @@ export class PostsController {
     @UploadedFile() image: Express.Multer.File,
     @Body() postCreateData: PostDto,
   ): Promise<PostDto> {
-    const uploadedImageLink = await this.dropboxService.uploadFile(image);
-    return await this.postService.create({
-      ...postCreateData,
-      imagePath: uploadedImageLink,
-    });
+    return await this.postService.create(postCreateData, image);
   }
 }

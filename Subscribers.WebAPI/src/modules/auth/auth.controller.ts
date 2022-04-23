@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from '../../common/models/users.model';
 import { Tokens } from '../../common/types/tokens.type';
@@ -8,6 +8,8 @@ import { GetJwtRefreshPayload } from '../../common/decorators/refresh-token.deco
 import { JwtRefreshPayload } from '../../common/types/jwt-refresh-payload.type';
 import { JwtAccessAuthGuard } from './guards/jwt-access-auth.guard';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -23,8 +25,13 @@ export class AuthController {
 
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
-  public async signup(@Body() authSignupData: User): Promise<Tokens> {
-    return await this.authService.signup(authSignupData);
+  @UseInterceptors(FileInterceptor('avatar'))
+  public async signup(
+    @Body() authSignupData: User,
+    @UploadedFile() avatar: Express.Multer.File | undefined,
+  ): Promise<Tokens> {
+    console.log(avatar);
+    return await this.authService.signup(authSignupData, avatar);
   }
 
   @UseGuards(JwtAccessAuthGuard)

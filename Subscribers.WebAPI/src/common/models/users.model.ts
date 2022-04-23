@@ -29,6 +29,9 @@ export class User extends Model<User> {
   @Column({ type: DataType.STRING, unique: true, allowNull: true })
   nickname: string;
 
+  @Column({ type: DataType.STRING })
+  avatarPath: string;
+
   @IsOptional()
   @Column({ type: DataType.STRING, allowNull: true })
   refreshToken: string;
