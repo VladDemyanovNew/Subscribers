@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '../../common/models/users.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { RolesService } from '../roles/roles.service';
 import { RoleName } from '../../common/enums/role-name';
 import { Role } from '../../common/models/roles.model';
 import { isNil } from '@nestjs/common/utils/shared.utils';
+import { Subscription } from '../../common/models/subscriptions.model';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +13,8 @@ export class UsersService {
   constructor(
     @InjectModel(User)
     private userModel: typeof User,
+    @InjectModel(Subscription)
+    private subscriptionsModel: typeof Subscription,
     private roleService: RolesService,
   ) {
   }
@@ -38,5 +41,77 @@ export class UsersService {
 
   public async findById(userId: number): Promise<User> {
     return await this.userModel.findOne({ where: { id: userId }, include: { all: true } });
+  }
+
+  public async subscribe(ownerId: number, subscriberId: number): Promise<void> {
+    const doesOwnerExist = !isNil(await this.findById(ownerId));
+    if (!doesOwnerExist) {
+      throw new HttpException(
+        `Unable to subscribe on user with id=${ ownerId }, ` +
+        `because it doesn't exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const doesSubscriberExist = !isNil(await this.findById(subscriberId));
+    if (!doesSubscriberExist) {
+      throw new HttpException(
+        `Unable to subscribe user with id=${ subscriberId }, ` +
+        `because it doesn't exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const hasUserAlreadySubscribed = !isNil(await this.subscriptionsModel.findOne({
+      where: {
+        subscriberId: subscriberId,
+        ownerId: ownerId,
+      },
+    }));
+    if (hasUserAlreadySubscribed) {
+      throw new HttpException(
+        `Unable to subscribe on user with id=${ ownerId }, ` +
+        `because the subscription already exists`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    await this.subscriptionsModel.create({ ownerId: ownerId, subscriberId: subscriberId });
+  }
+
+  public async unsubscribe(ownerId: number, subscriberId: number): Promise<void> {
+    const doesOwnerExist = !isNil(await this.findById(ownerId));
+    if (!doesOwnerExist) {
+      throw new HttpException(
+        `Unable to unsubscribe from user with id=${ ownerId }, ` +
+        `because it doesn't exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const doesSubscriberExist = !isNil(await this.findById(subscriberId));
+    if (!doesSubscriberExist) {
+      throw new HttpException(
+        `Unable to unsubscribe user with id=${ subscriberId }, ` +
+        `because it doesn't exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const isUserSubscribed = !isNil(await this.subscriptionsModel.findOne({
+      where: {
+        subscriberId: subscriberId,
+        ownerId: ownerId,
+      },
+    }));
+    if (!isUserSubscribed) {
+      throw new HttpException(
+        `Unable to unsubscribe from user with id=${ ownerId }, ` +
+        `because the subscription not exists`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    await this.subscriptionsModel.destroy({ where: { subscriberId: subscriberId, ownerId: ownerId } });
   }
 }

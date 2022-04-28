@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { PostDto } from '../../common/dtos/post.dto';
 import { UsersService } from '../users/users.service';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { fillPost } from '../../common/helpers/post,helper';
+import { fillPost } from '../../common/helpers/post.helper';
 import { DropboxService } from '../dropbox/dropbox.service';
 import { Express } from 'express';
 

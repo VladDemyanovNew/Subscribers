@@ -1,7 +1,7 @@
 import {
   BadRequestException,
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -14,6 +14,7 @@ import { User } from '../../common/models/users.model';
 import { JwtAccessAuthGuard } from '../auth/guards/jwt-access-auth.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RoleName } from '../../common/enums/role-name';
+import { SubscriptionParamDto } from '../../common/dtos/subscription-param.dto';
 
 @Controller('users')
 export class UsersController {
@@ -45,5 +46,17 @@ export class UsersController {
       throw new BadRequestException(`User with username=${ username } doesnt exist`);
     }
     return user;
+  }
+
+  @Post(':ownerId/subscribers/:subscriberId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async subscribe(@Param() params: SubscriptionParamDto): Promise<void> {
+    await this.usersService.subscribe(params.ownerId, params.subscriberId);
+  }
+
+  @Delete(':ownerId/subscribers/:subscriberId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async unsubscribe(@Param() params: SubscriptionParamDto): Promise<void> {
+    await this.usersService.unsubscribe(params.ownerId, params.subscriberId);
   }
 }

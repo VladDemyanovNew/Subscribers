@@ -4,7 +4,7 @@ import { PostDto } from '../../common/dtos/post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { DropboxService } from '../dropbox/dropbox.service';
-import { parsePostToDto } from '../../common/helpers/post,helper';
+import { parsePostToDto } from '../../common/helpers/post.helper';
 
 @Controller('posts')
 export class PostsController {
