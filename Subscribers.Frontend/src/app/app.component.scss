@@ -7,9 +7,10 @@
   background-color: $main-color;
 
   .content {
-    padding: 1rem 12rem 0 12rem;
+    padding: 1rem 20rem 0 20rem;
     margin-top: $header-height;
     height: 100%;
     background-color: $main-color;
+    min-width: 40rem;
   }
 }

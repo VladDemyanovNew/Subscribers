@@ -1,32 +1,43 @@
 <div class="feed">
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
-  <p>feed works!</p>
+
+  <mat-card
+    *ngFor="let post of posts"
+    class="example-card"
+  >
+    <mat-card-header>
+      <img
+        mat-card-avatar
+        class="example-header-image"
+        src="{{ post.owner?.avatarPath }}"
+        alt="Avatar image"
+      >
+      <mat-card-title>
+        {{ post.title }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ post.owner?.nickname }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img
+      mat-card-image
+      src="{{ post.imagePath }}"
+      alt="Post image"
+    >
+    <mat-card-content>
+      <p>
+        {{ post.content }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-icon-button
+        color="warn"
+        matTooltip="Понравилось"
+      >
+        <mat-icon>favorite</mat-icon>
+      </button>
+      <button mat-button>COMMENT</button>
+    </mat-card-actions>
+  </mat-card>
+
 </div>

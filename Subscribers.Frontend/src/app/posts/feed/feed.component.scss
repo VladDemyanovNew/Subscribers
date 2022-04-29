@@ -1,5 +1,13 @@
 @import '../../../styles/variables.scss';
 
 .feed {
-  background: $secondary-color;
+  .example-card {
+    background: $secondary-color;
+    margin-bottom: 1rem;
+
+    .example-header-image {
+      background-size: cover;
+    }
+  }
 }
+

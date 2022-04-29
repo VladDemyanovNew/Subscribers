@@ -1,5 +1,6 @@
 import { Post } from '../models/posts.model';
 import { PostDto } from '../dtos/post.dto';
+import { parseUserToDto } from './user.helper';
 
 export function fillPost(source: Post, dest: Post): void {
   dest.ownerId = source.ownerId;
@@ -11,9 +12,10 @@ export function fillPost(source: Post, dest: Post): void {
 export function parsePostToDto(post: Post): PostDto {
   return <PostDto> {
     id: post.id,
-    content: post.content,
-    title: post.title,
     ownerId: post.ownerId,
+    content: post.content,
     imagePath: post.imagePath,
+    title: post.title,
+    owner: parseUserToDto(post.owner),
   };
 }

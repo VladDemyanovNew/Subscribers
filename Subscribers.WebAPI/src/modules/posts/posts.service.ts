@@ -4,9 +4,11 @@ import { InjectModel } from '@nestjs/sequelize';
 import { PostDto } from '../../common/dtos/post.dto';
 import { UsersService } from '../users/users.service';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { fillPost } from '../../common/helpers/post.helper';
+import { fillPost, parsePostToDto } from '../../common/helpers/post.helper';
 import { DropboxService } from '../dropbox/dropbox.service';
 import { Express } from 'express';
+import { User } from '../../common/models/users.model';
+import { Like } from '../../common/models/likes.model';
 
 @Injectable()
 export class PostsService {
@@ -18,8 +20,9 @@ export class PostsService {
     private dropboxService: DropboxService) {
   }
 
-  public async getAll(): Promise<Post[]> {
-    return await this.postModel.findAll();
+  public async getAll(): Promise<PostDto[]> {
+    const rawUsers = await this.postModel.findAll({ include: [User, Like] });
+    return rawUsers.map(rawPost => parsePostToDto(rawPost));
   }
 
   public async create(postCreateData: PostDto, image: Express.Multer.File): Promise<Post> {

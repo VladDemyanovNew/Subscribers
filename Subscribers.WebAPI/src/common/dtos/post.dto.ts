@@ -1,4 +1,5 @@
 import { MaxLength } from 'class-validator';
+import { UserDto } from './user.dto';
 
 export class PostDto {
 
@@ -13,4 +14,6 @@ export class PostDto {
   readonly imagePath?: string;
 
   readonly ownerId: number;
+
+  readonly owner?: UserDto;
 }

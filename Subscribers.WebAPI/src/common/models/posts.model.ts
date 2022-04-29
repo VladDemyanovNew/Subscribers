@@ -11,7 +11,7 @@ export class Post extends Model<Post> {
   id: number;
 
   @MaxLength(4000, { message: 'Максимальная длина 4000' })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.STRING(4000) })
   content: string;
 
   @MaxLength(32, { message: 'Максимальная длина 32' })
@@ -27,7 +27,7 @@ export class Post extends Model<Post> {
   ownerId: number;
 
   @BelongsTo(() => User)
-  owner: Post;
+  owner: User;
 
   @HasMany(() => Like)
   likes: Like[];

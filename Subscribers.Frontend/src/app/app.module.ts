@@ -15,6 +15,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { PostConstructorComponent } from './posts/post-constructor/post-constructor.component';
 import { FeedComponent } from './posts/feed/feed.component';
 import { GuidelineComponent } from './posts/guideline/guideline.component';
+import { PostService } from './services/post.service';
+import { HttpClientModule } from '@angular/common/http';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -32,11 +39,17 @@ import { GuidelineComponent } from './posts/guideline/guideline.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     AppRoutingModule,
     MatToolbarModule,
     MatButtonModule,
+    InfiniteScrollModule,
+    NgxSpinnerModule,
+    MatCardModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
-  providers: [],
+  providers: [PostService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
