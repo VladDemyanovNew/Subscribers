@@ -30,7 +30,6 @@ export class AuthController {
     @Body() authSignupData: User,
     @UploadedFile() avatar: Express.Multer.File | undefined,
   ): Promise<Tokens> {
-    console.log(avatar);
     return await this.authService.signup(authSignupData, avatar);
   }
 

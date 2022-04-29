@@ -1,0 +1,16 @@
+@import '../../styles/variables.scss';
+
+.toolbar {
+  position: fixed;
+  padding: 0 12rem;
+  height: $header-height;
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .logo {
+    color: $main-color;
+    text-decoration: none;
+  }
+}

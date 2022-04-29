@@ -1,0 +1,15 @@
+@import '../styles/variables.scss';
+
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: $main-color;
+
+  .content {
+    padding: 1rem 12rem 0 12rem;
+    margin-top: $header-height;
+    height: 100%;
+    background-color: $main-color;
+  }
+}
