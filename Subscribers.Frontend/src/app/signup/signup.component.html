@@ -1,1 +1,26 @@
-<p>signup works!</p>
+<div class="signup-form-wrapper">
+  <div class="form-group">
+    <h1 class="title">Регистрация</h1>
+    <form
+      [formGroup]="formGroup"
+      class="signup-form"
+      id="signup-form"
+    >
+      <ngx-dropzone
+        class="dropzone"
+        (change)="onSelectFile($event)"
+      >
+        <ngx-dropzone-label>
+          <span>Перетащите картинку!</span>
+        </ngx-dropzone-label>
+        <ngx-dropzone-preview
+          *ngFor="let file of files"
+          [removable]="true"
+          (removed)="onRemoveFile(file)"
+        >
+          <ngx-dropzone-label class="dropzone-label">{{ file.name }} ({{ file.type }})</ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </ngx-dropzone>
+    </form>
+  </div>
+</div>

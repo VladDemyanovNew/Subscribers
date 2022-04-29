@@ -12,7 +12,7 @@ import { DialogsComponent } from './dialogs/dialogs.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { PostConstructorComponent } from './posts/post-constructor/post-constructor.component';
+import { PostsControlsComponent } from './posts/posts-controls/posts-controls.component';
 import { FeedComponent } from './posts/feed/feed.component';
 import { GuidelineComponent } from './posts/guideline/guideline.component';
 import { PostService } from './services/post.service';
@@ -22,6 +22,12 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PostFormComponent } from './posts/post-form/post-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -32,9 +38,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     SignupComponent,
     DialogsComponent,
     NotFoundComponent,
-    PostConstructorComponent,
+    PostsControlsComponent,
     FeedComponent,
     GuidelineComponent,
+    PostFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +55,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
+    MatDialogModule,
+    NgxDropzoneModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [PostService],
   bootstrap: [AppComponent]

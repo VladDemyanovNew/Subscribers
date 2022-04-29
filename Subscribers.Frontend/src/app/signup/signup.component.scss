@@ -1,0 +1,37 @@
+@import '../../styles/variables.scss';
+
+.signup-form-wrapper {
+  width: 100%;
+  height: calc(100vh - 2.8rem - 2rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .form-group {
+    height: 37.5rem;
+    width: 37.5rem;
+    padding: 1.5rem;
+    background: $secondary-color;
+    border-radius: 0.5rem;
+
+    .title {
+      color: white;
+    }
+
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+
+      .dropzone {
+        margin-bottom: 1rem;
+        border-color: white;
+        background-color: rgba(255,255,255,.1);
+        color: white;
+
+        .dropzone-label {
+          color: #424242;
+        }
+      }
+    }
+  }
+}
