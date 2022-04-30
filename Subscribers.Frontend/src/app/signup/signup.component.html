@@ -3,6 +3,7 @@
     <h1 class="title">Регистрация</h1>
     <form
       [formGroup]="formGroup"
+      (ngSubmit)="onSubmit()"
       class="signup-form"
       id="signup-form"
     >
@@ -18,9 +19,79 @@
           [removable]="true"
           (removed)="onRemoveFile(file)"
         >
-          <ngx-dropzone-label class="dropzone-label">{{ file.name }} ({{ file.type }})</ngx-dropzone-label>
+          <ngx-dropzone-label class="dropzone-label">
+            {{ file.name }} ({{ file.type }})
+          </ngx-dropzone-label>
         </ngx-dropzone-preview>
       </ngx-dropzone>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email" placeholder="Пример pat@example.com">
+        <mat-error *ngIf="formGroup.controls['email'].hasError('email')">
+          Введите валидный адрес электронной почты
+        </mat-error>
+        <mat-error *ngIf="formGroup.controls['email'].hasError('required')">
+          Поле обязательно для заполнения
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Имя</mat-label>
+        <input matInput formControlName="nickname">
+        <mat-error *ngIf="formGroup.controls['nickname'].hasError('maxlength')">
+          Максимальная длина {{ validationConstants.MaxLengthUserNickname }}
+        </mat-error>
+      </mat-form-field>
+
+      <div class="passwords-section">
+        <mat-form-field appearance="fill">
+          <mat-label>Пароль</mat-label>
+          <input matInput type="password" formControlName="password">
+          <mat-error *ngIf="formGroup.controls['password'].hasError('required')">
+            Поле обязательно для заполнения
+          </mat-error>
+          <mat-error *ngIf="formGroup.controls['password'].hasError('maxlength')">
+            Максимальная длина {{ validationConstants.MaxLengthUserPassword }}
+          </mat-error>
+          <mat-error *ngIf="formGroup.controls['password'].hasError('minlength')">
+            Минимальная длина {{ validationConstants.MinLengthUserPassword }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Подтверждение пароля</mat-label>
+          <input matInput type="password" formControlName="confirmationPassword">
+          <mat-error *ngIf="formGroup.controls['confirmationPassword'].hasError('matching')">
+            Пароли не совпадают
+          </mat-error>
+          <mat-error *ngIf="formGroup.controls['confirmationPassword'].hasError('required')">
+            Поле обязательно для заполнения
+          </mat-error>
+          <mat-error *ngIf="formGroup.controls['confirmationPassword'].hasError('maxlength')">
+            Максимальная длина {{ validationConstants.MaxLengthUserPassword }}
+          </mat-error>
+          <mat-error *ngIf="formGroup.controls['confirmationPassword'].hasError('minlength')">
+            Минимальная длина {{ validationConstants.MinLengthUserPassword }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-progress-bar
+        *ngIf="isLoading"
+        class="progress-bar"
+        mode="query"
+      ></mat-progress-bar>
+
+      <button
+        [disabled]="formGroup.invalid || isLoading"
+        mat-raised-button
+        class="submit-btn"
+        type="submit"
+      >
+        <span>Зарегестироваться</span>
+      </button>
+
     </form>
   </div>
 </div>

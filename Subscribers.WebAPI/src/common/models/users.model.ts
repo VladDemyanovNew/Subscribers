@@ -26,7 +26,7 @@ export class User extends Model<User> {
 
   @MaxLength(32)
   @IsOptional()
-  @Column({ type: DataType.STRING, unique: true, allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   nickname: string;
 
   @Column({ type: DataType.STRING })

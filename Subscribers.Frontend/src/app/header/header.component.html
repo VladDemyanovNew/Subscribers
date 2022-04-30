@@ -1,7 +1,35 @@
 <mat-toolbar class="mat-elevation-z8 toolbar">
-  <a class="logo" routerLink="/posts">Subscribers</a>
-  <div class="spacer"></div>
-  <a mat-button routerLink="/dialogs">Диалоги</a>
-  <a mat-button routerLink="/posts">Посты</a>
-  <a mat-button>Выйти</a>
+  <div class="header-inner-wrapper">
+    <a class="logo" routerLink="/posts">Subscribers</a>
+    <div class="spacer"></div>
+    <a
+      *ngIf="authenticationService.isAuthenticated"
+      mat-button
+      routerLink="/dialogs"
+    >Диалоги</a>
+    <a
+      *ngIf="authenticationService.isAuthenticated"
+      mat-button
+      routerLink="/posts"
+    >Посты</a>
+    <a
+      *ngIf="authenticationService.isAuthenticated"
+      (click)="logout()"
+      mat-button
+    >
+      Выйти
+    </a>
+    <div
+      *ngIf="authenticationService.isAuthenticated"
+      class="header-user-info"
+    >
+      <img
+        mat-card-avatar
+        class="header-avatar"
+        src="{{ authenticationService.currentUserDecoded?.avatarPath }}"
+        alt="Avatar image"
+      >
+      <span>{{ authenticationService.currentUserDecoded?.email }}</span>
+    </div>
+  </div>
 </mat-toolbar>

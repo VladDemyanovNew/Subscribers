@@ -1,3 +1,9 @@
+@import '../../../styles/variables.scss';
+
+::ng-deep .mat-dialog-container {
+  background: $secondary-color;
+}
+
 .submit-btn {
   background: forestgreen;
   color: white;
@@ -10,7 +16,7 @@
   .dropzone {
     margin-bottom: 1rem;
     border-color: white;
-    background-color: rgba(255,255,255,.1);
+    background-color: rgba(255, 255, 255, .1);
     color: white;
 
     .dropzone-label {

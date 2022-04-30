@@ -9,7 +9,6 @@ import { PostsComponent } from './posts/posts.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { DialogsComponent } from './dialogs/dialogs.component';
-import { NotFoundComponent } from './not-found/not-found.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { PostsControlsComponent } from './posts/posts-controls/posts-controls.component';
@@ -28,6 +27,9 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AuthenticationService } from './services/authentication.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,6 @@ import { MatInputModule } from '@angular/material/input';
     SigninComponent,
     SignupComponent,
     DialogsComponent,
-    NotFoundComponent,
     PostsControlsComponent,
     FeedComponent,
     GuidelineComponent,
@@ -60,8 +61,10 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
   ],
-  providers: [PostService],
+  providers: [PostService, AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

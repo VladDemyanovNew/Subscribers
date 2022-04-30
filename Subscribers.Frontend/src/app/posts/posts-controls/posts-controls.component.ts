@@ -25,6 +25,7 @@ export class PostsControlsComponent implements OnInit {
           post: post,
           dialogTitle: isEditMode ? 'Редактирование поста' : 'Создание нового поста',
           isEditMode: isEditMode,
+          panelClass: 'custom-modalbox',
         },
       },
     );

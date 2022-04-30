@@ -4,7 +4,7 @@ import { SigninComponent } from '../signin/signin.component';
 import { SignupComponent } from '../signup/signup.component';
 import { PostsComponent } from '../posts/posts.component';
 import { DialogsComponent } from '../dialogs/dialogs.component';
-import { NotFoundComponent } from '../not-found/not-found.component';
+import { AuthenticationGuard } from './authentication.guard';
 
 const appRoutes: Routes = [
   {
@@ -17,15 +17,17 @@ const appRoutes: Routes = [
   },
   {
     path: 'posts',
+    canActivate: [AuthenticationGuard],
     component: PostsComponent,
   },
   {
     path: 'dialogs',
+    canActivate: [AuthenticationGuard],
     component: DialogsComponent,
   },
   {
     path: '**',
-    component: NotFoundComponent,
+    redirectTo: 'posts',
   },
 ];
 

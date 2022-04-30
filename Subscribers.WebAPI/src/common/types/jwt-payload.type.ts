@@ -4,4 +4,5 @@ export type JwtPayload = {
   email: string;
   sub: number;
   roles: Role[];
+  avatarPath?: string;
 };

@@ -1,59 +1,62 @@
-<h1 mat-dialog-title>{{ dialogProps.dialogTitle }}</h1>
-<div mat-dialog-content>
-  <form
-    [formGroup]="formGroup"
-    class="post-form"
-    id="post-form"
-  >
-    <ngx-dropzone
-      class="dropzone"
-      (change)="onSelectFile($event)"
+<div class="dialog-wrapper">
+  <h1 mat-dialog-title>{{ dialogProps.dialogTitle }}</h1>
+  <div mat-dialog-content>
+    <form
+      [formGroup]="formGroup"
+      class="post-form"
+      id="post-form"
     >
-      <ngx-dropzone-label>
+      <ngx-dropzone
+        class="dropzone"
+        (change)="onSelectFile($event)"
+      >
+        <ngx-dropzone-label>
         <span *ngIf="dialogProps.isEditMode">
           Ссылка на картинку: {{ dialogProps.post?.imagePath }}
         </span>
-        <span *ngIf="!dialogProps.isEditMode">Перетащите картинку!</span>
-      </ngx-dropzone-label>
-      <ngx-dropzone-preview
-        *ngFor="let file of files"
-        [removable]="true"
-        (removed)="onRemoveFile(file)"
-      >
-        <ngx-dropzone-label class="dropzone-label">{{ file.name }} ({{ file.type }})</ngx-dropzone-label>
-      </ngx-dropzone-preview>
-    </ngx-dropzone>
+          <span *ngIf="!dialogProps.isEditMode">Перетащите картинку!</span>
+        </ngx-dropzone-label>
+        <ngx-dropzone-preview
+          *ngFor="let file of files"
+          [removable]="true"
+          (removed)="onRemoveFile(file)"
+        >
+          <ngx-dropzone-label class="dropzone-label">{{ file.name }} ({{ file.type }})</ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </ngx-dropzone>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Заголовок</mat-label>
-      <input matInput formControlName="title">
-      <mat-error *ngIf="formGroup.controls['title'].hasError('required')">
-        Поле обязательно для заполнения
-      </mat-error>
-      <mat-error *ngIf="formGroup.controls['title'].hasError('maxlength')">
-        Максимальная длина {{ validationConstants.MaxLengthPostTitle }}
-      </mat-error>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Заголовок</mat-label>
+        <input matInput formControlName="title">
+        <mat-error *ngIf="formGroup.controls['title'].hasError('required')">
+          Поле обязательно для заполнения
+        </mat-error>
+        <mat-error *ngIf="formGroup.controls['title'].hasError('maxlength')">
+          Максимальная длина {{ validationConstants.MaxLengthPostTitle }}
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Содержание</mat-label>
-      <textarea matInput formControlName="content"></textarea>
-      <mat-error *ngIf="formGroup.controls['content'].hasError('maxlength')">
-        Максимальная длина {{ validationConstants.MaxLengthPostContent }}
-      </mat-error>
-    </mat-form-field>
-  </form>
+      <mat-form-field appearance="fill">
+        <mat-label>Содержание</mat-label>
+        <textarea matInput formControlName="content"></textarea>
+        <mat-error *ngIf="formGroup.controls['content'].hasError('maxlength')">
+          Максимальная длина {{ validationConstants.MaxLengthPostContent }}
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="onDialogClose()">Отменить</button>
+    <button
+      mat-raised-button
+      class="submit-btn"
+      type="submit"
+      form="post-form"
+    >
+      <span *ngIf="!dialogProps.isEditMode">Создать</span>
+      <span *ngIf="dialogProps.isEditMode">Обновить</span>
+    </button>
+  </mat-dialog-actions>
 </div>
 
-<mat-dialog-actions>
-  <button mat-button (click)="onDialogClose()">Отменить</button>
-  <button
-    mat-raised-button
-    class="submit-btn"
-    type="submit"
-    form="post-form"
-  >
-    <span *ngIf="!dialogProps.isEditMode">Создать</span>
-    <span *ngIf="dialogProps.isEditMode">Обновить</span>
-  </button>
-</mat-dialog-actions>

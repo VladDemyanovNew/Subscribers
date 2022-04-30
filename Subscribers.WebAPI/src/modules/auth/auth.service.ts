@@ -10,6 +10,7 @@ import { JwtRefreshPayload } from '../../common/types/jwt-refresh-payload.type';
 import * as argon from 'argon2';
 import { Express } from 'express';
 import { DropboxService } from '../dropbox/dropbox.service';
+import { parseUserToDto } from '../../common/helpers/user.helper';
 
 @Injectable()
 export class AuthService {
@@ -45,6 +46,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       roles: user.roles,
+      avatarPath: user?.avatarPath,
     });
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
@@ -66,6 +68,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       roles: user.roles,
+      avatarPath: user?.avatarPath,
     });
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
@@ -97,6 +100,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       roles: user.roles,
+      avatarPath: user?.avatarPath,
     });
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 

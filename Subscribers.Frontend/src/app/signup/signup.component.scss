@@ -2,25 +2,24 @@
 
 .signup-form-wrapper {
   width: 100%;
-  height: calc(100vh - 2.8rem - 2rem);
+  height: calc(100vh - 2.8rem - 1rem);
   display: flex;
   justify-content: center;
   align-items: center;
 
   .form-group {
-    height: 37.5rem;
-    width: 37.5rem;
+    width: 30rem;
     padding: 1.5rem;
     background: $secondary-color;
     border-radius: 0.5rem;
+    color: white;
 
     .title {
       color: white;
     }
 
     .signup-form {
-      display: flex;
-      flex-direction: column;
+      display: grid;
 
       .dropzone {
         margin-bottom: 1rem;
@@ -31,6 +30,22 @@
         .dropzone-label {
           color: #424242;
         }
+      }
+
+      .passwords-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 0.8rem;
+      }
+
+      .progress-bar {
+        margin-top: 0.5rem;
+      }
+
+      .submit-btn {
+        background: forestgreen;
+        color: white;
+        margin-top: 0.5rem;
       }
     }
   }

@@ -1,5 +1,9 @@
 @import '../styles/variables.scss';
 
+::ng-deep .mat-form-field {
+  margin-bottom: 0.5rem;
+}
+
 .app {
   min-height: 100%;
   display: flex;
@@ -7,10 +11,10 @@
   background-color: $main-color;
 
   .content {
-    padding: 1rem 20rem 0 20rem;
-    margin-top: $header-height;
+    padding-top: 1rem;
     height: 100%;
     background-color: $main-color;
-    min-width: 40rem;
+    width: $content-width;
+    margin: $header-height auto 0 auto;
   }
 }

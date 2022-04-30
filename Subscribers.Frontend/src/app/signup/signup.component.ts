@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { matchValidator } from '../common/validators';
+import * as validationConstants from '../common/constants';
+import { AuthenticationService } from '../services/authentication.service';
+import { ErrorResponse } from '../services/models/error-response';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Tokens } from '../services/models/tokens';
 
 @Component({
   selector: 'app-signup',
@@ -10,11 +17,38 @@ export class SignupComponent implements OnInit {
 
   public files: File[] = [];
 
-  public formGroup: FormGroup = new FormGroup({
+  public isLoading: boolean = false;
 
+  public validationConstants = validationConstants;
+
+  public formGroup: FormGroup = new FormGroup({
+    email: new FormControl(undefined, [
+      Validators.required,
+      Validators.email,
+    ]),
+    password: new FormControl(undefined, [
+      Validators.required,
+      matchValidator('confirmationPassword', true),
+      Validators.maxLength(validationConstants.MaxLengthUserPassword),
+      Validators.minLength(validationConstants.MinLengthUserPassword),
+    ]),
+    confirmationPassword: new FormControl(undefined, [
+      Validators.required,
+      matchValidator('password'),
+      Validators.maxLength(validationConstants.MaxLengthUserPassword),
+      Validators.minLength(validationConstants.MinLengthUserPassword),
+    ]),
+    nickname: new FormControl(undefined, [
+      Validators.maxLength(validationConstants.MaxLengthUserNickname),
+    ]),
   });
 
-  constructor() { }
+  constructor(
+    private authenticationService: AuthenticationService,
+    private snackBar: MatSnackBar,
+    private router: Router,
+  ) {
+  }
 
   ngOnInit(): void {
   }
@@ -27,4 +61,29 @@ export class SignupComponent implements OnInit {
     this.files.splice(this.files.indexOf(event), 1);
   }
 
+  public onSubmit(): void {
+    if (this.formGroup.invalid) {
+      return;
+    }
+    this.isLoading = true;
+
+    this.authenticationService.signup({
+        ...this.formGroup.value,
+      }, this.files[0])
+      .subscribe({
+        next: (response: Tokens) => {
+          this.isLoading = false;
+          this.authenticationService.currentUserValue = response;
+          this.router?.navigate(['/posts']);
+        },
+        error: (error: ErrorResponse) => {
+          this.isLoading = false;
+          this.snackBar.open(
+            'При регистрации возникла ошибка',
+            'Close',
+            { duration: 3000 },
+          );
+        },
+      });
+  }
 }
