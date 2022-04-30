@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Post } from '../../services/models/post';
 import { PostFormComponent } from '../post-form/post-form.component';
@@ -9,15 +9,14 @@ import { PostFormProps } from '../../services/models/post-form-props';
   templateUrl: './posts-controls.component.html',
   styleUrls: ['./posts-controls.component.scss']
 })
-export class PostsControlsComponent implements OnInit {
+export class PostsControlsComponent {
 
-  constructor(private dialog: MatDialog) { }
-
-  ngOnInit(): void {
+  constructor(
+    private dialog: MatDialog) {
   }
 
   public openPostFormDialog(isEditMode: boolean, post?: Post): void {
-    const dialogRef = this.dialog.open(
+    this.dialog.open(
       PostFormComponent,
       {
         width: '37.5rem',

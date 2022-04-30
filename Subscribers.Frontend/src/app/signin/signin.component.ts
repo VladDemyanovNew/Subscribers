@@ -1,4 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import * as validationConstants from '../common/constants';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { matchValidator } from '../common/validators';
+import { AuthenticationService } from '../services/authentication.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Tokens } from '../services/models/tokens';
+import { ErrorResponse } from '../services/models/error-response';
 
 @Component({
   selector: 'app-signin',
@@ -7,9 +15,54 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SigninComponent implements OnInit {
 
-  constructor() { }
+  public isLoading: boolean = false;
+
+  public validationConstants = validationConstants;
+
+  public formGroup: FormGroup = new FormGroup({
+    email: new FormControl(undefined, [
+      Validators.required,
+      Validators.email,
+    ]),
+    password: new FormControl(undefined, [
+      Validators.required,
+    ]),
+  });
+
+  constructor(
+    private authenticationService: AuthenticationService,
+    private snackBar: MatSnackBar,
+    private router: Router,
+  ) {
+  }
 
   ngOnInit(): void {
   }
 
+  public onSubmit(): void {
+    if (this.formGroup.invalid) {
+      return;
+    }
+    this.isLoading = true;
+
+    this.authenticationService.signin(
+        this.formGroup.value.email,
+        this.formGroup.value.password,
+      )
+      .subscribe({
+        next: (response: Tokens) => {
+          this.isLoading = false;
+          this.authenticationService.currentUserValue = response;
+          this.router?.navigate(['/posts']);
+        },
+        error: (error: ErrorResponse) => {
+          this.isLoading = false;
+          this.snackBar.open(
+            'При попытке войти возникла ошибка',
+            'Close',
+            { duration: 3000 },
+          );
+        },
+      });
+  }
 }

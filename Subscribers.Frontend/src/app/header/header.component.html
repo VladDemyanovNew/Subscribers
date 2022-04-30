@@ -6,12 +6,30 @@
       *ngIf="authenticationService.isAuthenticated"
       mat-button
       routerLink="/dialogs"
-    >Диалоги</a>
+    >
+      Диалоги
+    </a>
     <a
       *ngIf="authenticationService.isAuthenticated"
       mat-button
       routerLink="/posts"
-    >Посты</a>
+    >
+      Посты
+    </a>
+    <a
+      *ngIf="!authenticationService.isAuthenticated"
+      mat-button
+      routerLink="/signup"
+    >
+      Зарегистрироваться
+    </a>
+    <a
+      *ngIf="!authenticationService.isAuthenticated"
+      mat-button
+      routerLink="/signin"
+    >
+      Войти
+    </a>
     <a
       *ngIf="authenticationService.isAuthenticated"
       (click)="logout()"

@@ -35,11 +35,13 @@ export class PostsService {
     }
 
     const post = await this.postModel.create(<Post>{ ...postCreateData });
-    const uploadedImageLink = await this.dropboxService.uploadFile(image);
-    post.imagePath = uploadedImageLink;
-    await post.save();
+    if (image) {
+      const uploadedImageLink = await this.dropboxService.uploadFile(image);
+      post.imagePath = uploadedImageLink;
+      await post.save();
+    }
 
-    return post;
+    return await this.postModel.findByPk(post.id, { include: [User, Like] });
   }
 
   public async update(postUpdateData: PostDto): Promise<Post> {

@@ -15,7 +15,7 @@ import { PostsControlsComponent } from './posts/posts-controls/posts-controls.co
 import { FeedComponent } from './posts/feed/feed.component';
 import { GuidelineComponent } from './posts/guideline/guideline.component';
 import { PostService } from './services/post.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +30,8 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthenticationService } from './services/authentication.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { JwtInterceptor } from './common/interceptors/jwt.interceptor';
+import { ItemManagementService } from './services/item-management.service';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatProgressBarModule,
     MatSnackBarModule,
   ],
-  providers: [PostService, AuthenticationService],
+  providers: [
+    PostService,
+    AuthenticationService,
+    ItemManagementService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

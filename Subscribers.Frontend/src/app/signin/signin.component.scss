@@ -1,0 +1,44 @@
+@import '../../styles/variables.scss';
+
+.signin-form-wrapper {
+  width: 100%;
+  height: calc(100vh - 2.8rem - 1rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .form-group {
+    width: 25rem;
+    padding: 1.5rem;
+    background: $secondary-color;
+    border-radius: 0.5rem;
+    color: white;
+
+    .title {
+      color: white;
+    }
+
+    .signin-form {
+      display: grid;
+
+      .signin-header {
+        text-align: center;
+        padding-bottom: 4rem;
+
+        .avatar {
+          width: 10rem;
+        }
+      }
+
+      .progress-bar {
+        margin-top: 0.5rem;
+      }
+
+      .submit-btn {
+        background: forestgreen;
+        color: white;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}

@@ -30,8 +30,6 @@ export class AuthenticationService {
 
   public get isAuthenticated(): boolean {
     const jwtPayload = this.currentUserDecoded;
-    console.log(jwtPayload);
-
     return jwtPayload !== null;
   }
 
@@ -57,10 +55,18 @@ export class AuthenticationService {
     return this.http.post<Tokens>(`${ ApiEndpoints.Auth }/signup`, formData);
   }
 
-  public logout(): Observable<void> {
-    localStorage.removeItem(CurrentUser);
-    this.currentUserSubject?.next(null);
+  public signin(email: string, password: string): Observable<Tokens> {
+    return this.http.post<Tokens>(`${ ApiEndpoints.Auth }/signin`, {
+      email: email,
+      password: password,
+    });
+  }
 
-    return this.http.post<void>(`${ ApiEndpoints.Auth }/logout`, {});
+  public logout(): void {
+    this.http.post<void>(`${ ApiEndpoints.Auth }/logout`, {})
+      .subscribe(response => {
+        localStorage.removeItem(CurrentUser);
+        this.currentUserSubject?.next(null);
+      });
   }
 }

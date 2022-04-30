@@ -1,1 +1,49 @@
-<p>signin works!</p>
+<div class="signin-form-wrapper">
+  <div class="form-group">
+    <form
+      [formGroup]="formGroup"
+      (ngSubmit)="onSubmit()"
+      class="signin-form"
+      id="signin-form"
+    >
+      <div class="signin-header">
+        <img class="avatar" src="../../assets/avatar.png" alt="Signin image">
+        <h1 class="title">Вход в Subscribers</h1>
+      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email" placeholder="Пример pat@example.com">
+        <mat-error *ngIf="formGroup.controls['email'].hasError('email')">
+          Введите валидный адрес электронной почты
+        </mat-error>
+        <mat-error *ngIf="formGroup.controls['email'].hasError('required')">
+          Поле обязательно для заполнения
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Пароль</mat-label>
+        <input matInput type="password" formControlName="password">
+        <mat-error *ngIf="formGroup.controls['password'].hasError('required')">
+          Поле обязательно для заполнения
+        </mat-error>
+      </mat-form-field>
+
+      <mat-progress-bar
+        *ngIf="isLoading"
+        class="progress-bar"
+        mode="query"
+      ></mat-progress-bar>
+
+      <button
+        [disabled]="formGroup.invalid || isLoading"
+        mat-raised-button
+        class="submit-btn"
+        type="submit"
+      >
+        <span>Войти</span>
+      </button>
+
+    </form>
+  </div>
+</div>
