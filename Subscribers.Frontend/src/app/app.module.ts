@@ -32,6 +32,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { JwtInterceptor } from './common/interceptors/jwt.interceptor';
 import { ItemManagementService } from './services/item-management.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { MatListModule } from '@angular/material/list';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FeedComponent,
     GuidelineComponent,
     PostFormComponent,
+    SubscriptionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,11 +69,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressBarModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatListModule,
   ],
   providers: [
     PostService,
     AuthenticationService,
     ItemManagementService,
+    MatBottomSheet,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

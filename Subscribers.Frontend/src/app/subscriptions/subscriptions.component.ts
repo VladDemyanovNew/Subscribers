@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthenticationService } from '../../services/authentication.service';
-import { SubscriptionItem } from '../../services/models/subscription';
-import { JwtPayload } from '../../services/models/jwt-payload';
-
+import { AuthenticationService } from '../services/authentication.service';
+import { SubscriptionItem } from '../services/models/subscription';
+import { JwtPayload } from '../services/models/jwt-payload';
 
 @Component({
-  selector: 'app-guideline',
-  templateUrl: './guideline.component.html',
-  styleUrls: ['./guideline.component.scss']
+  selector: 'app-subscriptions',
+  templateUrl: './subscriptions.component.html',
+  styleUrls: ['./subscriptions.component.scss']
 })
-export class GuidelineComponent implements OnInit {
+export class SubscriptionsComponent implements OnInit {
 
-  public recommendations: SubscriptionItem[] = [];
+  public subscriptions: SubscriptionItem[] = [];
 
   public currentUser: JwtPayload | null;
 
@@ -26,21 +25,21 @@ export class GuidelineComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadRecommendations();
+    this.loadSubscriptions();
   }
 
-  private loadRecommendations(): void {
+  private loadSubscriptions(): void {
     const currentUserId = Number(this.currentUser?.sub);
-    this.userService.getRecommendationsForSubscribe(currentUserId)
+    this.userService.getUserSubscriptions(currentUserId)
       .subscribe({
         next: recommendations => {
-          this.recommendations = recommendations.map(recommendation => {
-            return <SubscriptionItem>{ subscription: recommendation, isSubscribed: false }
+          this.subscriptions = recommendations.map(recommendation => {
+            return <SubscriptionItem> { subscription: recommendation, isSubscribed: true }
           })
         },
         error: () => {
           this.snackBar.open(
-            'При загрузки рекомендаций возникла ошибка',
+            'При загрузки подписок возникла ошибка',
             'Close',
             { duration: 3000 },
           );
@@ -48,12 +47,12 @@ export class GuidelineComponent implements OnInit {
       });
   }
 
-  public subscribe(recommendation: SubscriptionItem): void {
+  public subscribe(subscription: SubscriptionItem): void {
     const currentUserId = Number(this.currentUser?.sub);
-    this.userService.subscribe(currentUserId, recommendation.subscription.id)
+    this.userService.subscribe(currentUserId, subscription.subscription.id)
       .subscribe({
         next: () => {
-          recommendation.isSubscribed = true;
+          subscription.isSubscribed = true;
           this.snackBar.open(
             'Подписка оформлена',
             'Close',
@@ -70,12 +69,12 @@ export class GuidelineComponent implements OnInit {
       });
   }
 
-  public unsubscribe(recommendation: SubscriptionItem): void {
+  public unsubscribe(subscription: SubscriptionItem): void {
     const currentUserId = Number(this.currentUser?.sub);
-    this.userService.unsubscribe(currentUserId, recommendation.subscription.id)
+    this.userService.unsubscribe(currentUserId, subscription.subscription.id)
       .subscribe({
         next: () => {
-          recommendation.isSubscribed = false;
+          subscription.isSubscribed = false;
           this.snackBar.open(
             'Подписка удалена',
             'Close',

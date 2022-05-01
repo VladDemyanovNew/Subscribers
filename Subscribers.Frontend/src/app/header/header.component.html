@@ -2,6 +2,13 @@
   <div class="header-inner-wrapper">
     <a class="logo" routerLink="/posts">Subscribers</a>
     <div class="spacer"></div>
+    <button
+      *ngIf="authenticationService.isAuthenticated"
+      mat-button
+      (click)="openBottomSheet()"
+    >
+      Подписки
+    </button>
     <a
       *ngIf="authenticationService.isAuthenticated"
       mat-button

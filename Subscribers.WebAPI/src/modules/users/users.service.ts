@@ -6,6 +6,12 @@ import { RoleName } from '../../common/enums/role-name';
 import { Role } from '../../common/models/roles.model';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { Subscription } from '../../common/models/subscriptions.model';
+import { Sequelize } from 'sequelize-typescript';
+import { UserDto } from '../../common/dtos/user.dto';
+import { Queries } from '../../common/sql/queries';
+import { parseUserToDto } from '../../common/helpers/user.helper';
+import { QueryTypes } from 'sequelize';
+import { getNRandomElements } from '../../common/helpers/array.helper';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +22,7 @@ export class UsersService {
     @InjectModel(Subscription)
     private subscriptionsModel: typeof Subscription,
     private roleService: RolesService,
+    private sequelize: Sequelize,
   ) {
   }
 
@@ -32,7 +39,25 @@ export class UsersService {
   }
 
   public async getAll(): Promise<User[]> {
-    return await this.userModel.findAll({ include: Role })
+    return await this.userModel.findAll({ include: [Role, Subscription] })
+  }
+
+  public async getUserSubscriptions(userId: number): Promise<UserDto[]> {
+    const queryResult = await this.sequelize.query(Queries.GetUserSubscriptions, {
+      replacements: { userId: userId },
+      type: QueryTypes.SELECT,
+    });
+    return queryResult.map(rawUser => parseUserToDto(rawUser as User));
+  }
+
+  public async getRecommendationsForSubscribe(userId: number): Promise<UserDto[]> {
+    const queryResult = await this.sequelize.query(Queries.GetRecommendationsForSubscribe, {
+      replacements: { userId: userId },
+      type: QueryTypes.SELECT,
+    });
+    const rawResultSet = queryResult.map(rawUser => parseUserToDto(rawUser as User));
+    const resultLength = 7;
+    return getNRandomElements<UserDto>(rawResultSet, resultLength);
   }
 
   public async findByEmail(email: string): Promise<User> {

@@ -1,0 +1,42 @@
+
+<div class="warning" *ngIf="subscriptions.length === 0">
+  <h4>Oops.. Вы пока ни на кого не подписаны,<br>
+    чтобы сделать это перейдите в рекомендации...</h4>
+</div>
+
+<mat-nav-list>
+  <a *ngFor="let subscription of subscriptions" mat-list-item class="subscription-item">
+    <div class="subscription-wrapper">
+      <div class="subscription-info">
+        <img
+          mat-card-avatar
+          class="subscription-avatar"
+          src="{{ subscription.subscription.avatarPath }}"
+          alt="Avatar image"
+        >
+        <span>
+        {{ subscription.subscription.email }}
+      </span>
+      </div>
+      <div class="controls">
+        <button
+          (click)="subscribe(subscription)"
+          *ngIf="!subscription.isSubscribed"
+          mat-button
+          class="subscribe-btn"
+        >
+          Подписаться
+        </button>
+        <button
+          (click)="unsubscribe(subscription)"
+          *ngIf="subscription.isSubscribed"
+          mat-button
+          class="unsubscribe-btn"
+        >
+          Отписаться
+        </button>
+      </div>
+    </div>
+
+  </a>
+</mat-nav-list>

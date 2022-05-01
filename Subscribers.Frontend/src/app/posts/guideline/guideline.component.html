@@ -1,13 +1,32 @@
 <div class="guideline">
-  <p>guideline works!</p>
-  <p>guideline works!</p>
-  <p>guideline works!</p>
-  <p>guideline works!</p>
-  <p>guideline works!</p>
-  <p>guideline works!</p>
-  <p>guideline works!</p>
-  <p>guideline works!</p>
-  <p>guideline works!</p>
-  <p>guideline works!</p>
+  <h4 style="text-align: center">Рекомендации</h4>
+  <div *ngFor="let recommendation of recommendations" class="recommendation">
+    <img
+      mat-card-avatar
+      class="recommendation-avatar"
+      src="{{ recommendation.subscription.avatarPath }}"
+      alt="Avatar image"
+    >
+    <div class="guideline-col2">
+      <span>
+        {{ recommendation.subscription.email }}
+      </span>
+      <a
+        (click)="subscribe(recommendation)"
+        *ngIf="!recommendation.isSubscribed"
+        class="subscribe-btn"
+      >
+        Подписаться
+      </a>
+      <a
+        (click)="unsubscribe(recommendation)"
+        *ngIf="recommendation.isSubscribed"
+        class="unsubscribe-btn"
+      >
+        Отписаться
+      </a>
+    </div>
+
+  </div>
 </div>
 

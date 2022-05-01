@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { User } from '../services/models/user';
 import { Router } from '@angular/router';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { SubscriptionsComponent } from '../subscriptions/subscriptions.component';
 
 @Component({
   selector: 'app-header',
@@ -15,11 +17,16 @@ export class HeaderComponent {
   constructor(
     public authenticationService: AuthenticationService,
     private router: Router,
+    private bottomSheet: MatBottomSheet,
   ) {
   }
 
   public logout(): void {
     this.authenticationService.logout();
     this.router?.navigate(['/signin']);
+  }
+
+  public openBottomSheet(): void {
+    this.bottomSheet.open(SubscriptionsComponent);
   }
 }

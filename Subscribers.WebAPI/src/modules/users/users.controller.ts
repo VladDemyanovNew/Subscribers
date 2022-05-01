@@ -15,6 +15,7 @@ import { JwtAccessAuthGuard } from '../auth/guards/jwt-access-auth.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RoleName } from '../../common/enums/role-name';
 import { SubscriptionParamDto } from '../../common/dtos/subscription-param.dto';
+import { UserDto } from '../../common/dtos/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -28,12 +29,22 @@ export class UsersController {
     return await this.usersService.create(userCreateData);
   }
 
-  @Roles(RoleName.USER)
-  @UseGuards(JwtAccessAuthGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
   public async getAll(): Promise<User[]> {
     return await this.usersService.getAll();
+  }
+
+  @Get(':userId/subscriptions')
+  @HttpCode(HttpStatus.OK)
+  public async getUserSubscriptions(@Param('userId') userId: number): Promise<UserDto[]> {
+    return await this.usersService.getUserSubscriptions(userId);
+  }
+
+  @Get(':userId/recommendations')
+  @HttpCode(HttpStatus.OK)
+  public async getRecommendationsForSubscribe(@Param('userId') userId: number): Promise<UserDto[]> {
+    return await this.usersService.getRecommendationsForSubscribe(userId);
   }
 
   @Roles(RoleName.ADMIN)

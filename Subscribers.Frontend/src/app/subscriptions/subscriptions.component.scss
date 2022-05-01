@@ -1,0 +1,37 @@
+.warning {
+  padding: 2rem;
+  text-align: center;
+}
+
+.subscription-item {
+  display: flex;
+  justify-content: space-between;
+
+  .subscription-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .subscription-info {
+      display: flex;
+      align-items: center;
+
+      .subscription-avatar {
+        margin-right: 0.5rem;
+      }
+    }
+
+    .subscribe-btn {
+      background-color: #f44336;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .unsubscribe-btn {
+      background-color: gray;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+  }
+}
