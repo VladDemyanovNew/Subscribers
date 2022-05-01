@@ -17,7 +17,6 @@ import { GuidelineComponent } from './posts/guideline/guideline.component';
 import { PostService } from './services/post.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -32,6 +31,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { JwtInterceptor } from './common/interceptors/jwt.interceptor';
 import { ItemManagementService } from './services/item-management.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -54,7 +54,6 @@ import { ItemManagementService } from './services/item-management.service';
     MatToolbarModule,
     MatButtonModule,
     InfiniteScrollModule,
-    NgxSpinnerModule,
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
@@ -65,6 +64,7 @@ import { ItemManagementService } from './services/item-management.service';
     MatInputModule,
     MatProgressBarModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     PostService,

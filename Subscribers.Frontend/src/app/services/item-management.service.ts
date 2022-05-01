@@ -9,7 +9,7 @@ export class ItemManagementService {
 
   private postItemSource = new Subject<Post>();
 
-  public createItem$ = this.postItemSource.asObservable();
+  public createPostItem$ = this.postItemSource.asObservable();
 
   public create(post: Post) {
     this.postItemSource.next(post);

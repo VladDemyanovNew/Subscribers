@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, HttpCode, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  HttpCode,
+  HttpStatus,
+  UseInterceptors,
+  UploadedFile,
+  Query
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostDto } from '../../common/dtos/post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -12,8 +22,11 @@ export class PostsController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  public async getAll(): Promise<PostDto[]> {
-    return await this.postService.getAll();
+  public async findSelected(
+    @Query('take') take: number,
+    @Query('skip') skip: number,
+  ): Promise<PostDto[]> {
+    return await this.postService.findSelected(Number(take), Number(skip));
   }
 
   @Post()

@@ -25,6 +25,19 @@ export class PostsService {
     return rawUsers.map(rawPost => parsePostToDto(rawPost));
   }
 
+  public async findSelected(take: number, skip: number): Promise<PostDto[]> {
+    const { rows, count } = await this.postModel.findAndCountAll({
+      include: [User, Like],
+      order: [
+        ['id', 'DESC'],
+      ],
+      offset: skip,
+      limit: take,
+    });
+
+    return rows.map(rawPost => parsePostToDto(rawPost));
+  }
+
   public async create(postCreateData: PostDto, image: Express.Multer.File): Promise<Post> {
     const doesUserExist = !isNil(await this.userService.findById(postCreateData.ownerId));
     if (!doesUserExist) {

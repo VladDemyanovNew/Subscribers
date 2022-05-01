@@ -1,43 +1,54 @@
 <div class="feed">
-
-  <mat-card
-    *ngFor="let post of posts"
-    class="example-card"
+  <div
+    class="search-results"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
   >
-    <mat-card-header>
-      <img
-        mat-card-avatar
-        class="example-header-image"
-        src="{{ post.owner?.avatarPath }}"
-        alt="Avatar image"
-      >
-      <mat-card-title>
-        {{ post.title }}
-      </mat-card-title>
-      <mat-card-subtitle>
-        {{ post.owner?.email }}
-      </mat-card-subtitle>
-    </mat-card-header>
-    <img
-      mat-card-image
-      src="{{ post.imagePath }}"
-      alt="Post image"
+    <mat-card
+      *ngFor="let post of posts"
+      class="example-card"
     >
-    <mat-card-content>
-      <p>
-        {{ post.content }}
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button
-        mat-icon-button
-        color="warn"
-        matTooltip="Понравилось"
+      <mat-card-header>
+        <img
+          mat-card-avatar
+          class="example-header-image"
+          src="{{ post.owner?.avatarPath }}"
+          alt="Avatar image"
+        >
+        <mat-card-title>
+          {{ post.title }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ post.owner?.email }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <img
+        mat-card-image
+        src="{{ post.imagePath }}"
+        alt="Post image"
       >
-        <mat-icon>favorite</mat-icon>
-      </button>
-      <button mat-button>COMMENT</button>
-    </mat-card-actions>
-  </mat-card>
+      <mat-card-content>
+        <p>
+          {{ post.content }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-icon-button
+          color="warn"
+          matTooltip="Понравилось"
+        >
+          <mat-icon>favorite</mat-icon>
+        </button>
+        <button mat-button>COMMENT</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div *ngIf="isLoading" class="spinner-section">
+      <mat-spinner [diameter]="60"></mat-spinner>
+    </div>
+  </div>
 
 </div>

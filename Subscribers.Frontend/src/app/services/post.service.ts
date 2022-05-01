@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Post } from './models/post';
 import { ApiEndpoints } from '../common/api-endpoints';
-import { Tokens } from './models/tokens';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +12,8 @@ export class PostService {
   constructor(private http: HttpClient) {
   }
 
-  public getAll(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${ ApiEndpoints.Posts }`);
+  public getAll(take?: number, skip?: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`${ ApiEndpoints.Posts }?take=${ take }&skip=${ skip }`);
   }
 
   public create(postCreateData: Post, image: File): Observable<Post> {

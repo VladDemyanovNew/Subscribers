@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { User } from '../services/models/user';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   public currentUser: User | undefined;
 
@@ -16,11 +16,6 @@ export class HeaderComponent implements OnInit {
     public authenticationService: AuthenticationService,
     private router: Router,
   ) {
-  }
-
-  public ngOnInit(): void {
-    // this.authenticationService.currentUser
-    //   .subscribe(currentUser => this.currentUser = currentUser);
   }
 
   public logout(): void {
