@@ -35,6 +35,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { MatListModule } from '@angular/material/list';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatListModule,
+    MatBadgeModule,
   ],
   providers: [
     PostService,

@@ -17,5 +17,6 @@ export function parsePostToDto(post: Post): PostDto {
     imagePath: post.imagePath,
     title: post.title,
     owner: parseUserToDto(post.owner),
+    comments: post.comments,
   };
 }

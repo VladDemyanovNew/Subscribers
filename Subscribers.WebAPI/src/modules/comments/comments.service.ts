@@ -3,6 +3,7 @@ import { Comment } from '../../common/models/comments.model';
 import { PostsService } from '../posts/posts.service';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { InjectModel } from '@nestjs/sequelize';
+import { User } from '../../common/models/users.model';
 
 @Injectable()
 export class CommentsService {
@@ -26,7 +27,7 @@ export class CommentsService {
       ...commentCreateData,
       postId: postId,
     });
-    return comment;
+    return await this.commentModel.findByPk(comment.id, { include: [User] });
   }
 
   public async getAllByPostId(postId: number): Promise<Comment[]> {

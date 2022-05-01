@@ -7,6 +7,10 @@
   display: flex;
   justify-content: space-between;
 
+  .mat-list-item-content {
+    width: 100%;
+  }
+
   .subscription-wrapper {
     width: 100%;
     display: flex;

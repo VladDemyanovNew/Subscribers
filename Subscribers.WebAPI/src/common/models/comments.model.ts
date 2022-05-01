@@ -1,4 +1,4 @@
-import { Column, DataType, ForeignKey, Model, NotEmpty, NotNull, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, ForeignKey, Model, NotEmpty, NotNull, Table } from 'sequelize-typescript';
 import { IsNotEmpty, MaxLength } from 'class-validator';
 import { User } from './users.model';
 import { Post } from './posts.model';
@@ -22,4 +22,7 @@ export class Comment extends Model<Comment> {
   @IsNotEmpty()
   @Column({ type: DataType.INTEGER, allowNull: false, onDelete: 'CASCADE' })
   postId: number;
+
+  @BelongsTo(() => User)
+  owner: User;
 }

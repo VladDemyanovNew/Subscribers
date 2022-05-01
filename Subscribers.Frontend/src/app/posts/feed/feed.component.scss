@@ -8,6 +8,42 @@
     .example-header-image {
       background-size: cover;
     }
+
+    .comments-input {
+      display: grid;
+      grid-template-columns: 1fr 0.1fr;
+
+      .send-btn {
+        margin: 0.5rem 0 0 0.1rem;
+      }
+    }
+
+    .comment-item {
+      display: block;
+      height: auto;
+      padding: 0.4rem 0;
+
+      .comment-wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .comment-text {
+          font-size: 0.8rem;
+        }
+
+        .comment-info {
+          display: flex;
+          align-items: center;
+          padding-bottom: 0.5rem;
+
+          .comment-avatar {
+            width: 2rem;
+            height: 2rem;
+            margin-right: 0.5rem;
+          }
+        }
+      }
+    }
   }
 
   .spinner-section {

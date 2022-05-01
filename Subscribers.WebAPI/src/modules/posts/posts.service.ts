@@ -9,6 +9,7 @@ import { DropboxService } from '../dropbox/dropbox.service';
 import { Express } from 'express';
 import { User } from '../../common/models/users.model';
 import { Like } from '../../common/models/likes.model';
+import { Comment } from '../../common/models/comments.model';
 
 @Injectable()
 export class PostsService {
@@ -27,7 +28,7 @@ export class PostsService {
 
   public async findSelected(take: number, skip: number): Promise<PostDto[]> {
     const { rows, count } = await this.postModel.findAndCountAll({
-      include: [User, Like],
+      include: [User, Like, Comment, { model: Comment, include: [User] }],
       order: [
         ['id', 'DESC'],
       ],
@@ -38,7 +39,7 @@ export class PostsService {
     return rows.map(rawPost => parsePostToDto(rawPost));
   }
 
-  public async create(postCreateData: PostDto, image: Express.Multer.File): Promise<Post> {
+  public async create(postCreateData: PostDto, image: Express.Multer.File): Promise<PostDto> {
     const doesUserExist = !isNil(await this.userService.findById(postCreateData.ownerId));
     if (!doesUserExist) {
       throw new HttpException(
@@ -49,12 +50,13 @@ export class PostsService {
 
     const post = await this.postModel.create(<Post>{ ...postCreateData });
     if (image) {
-      const uploadedImageLink = await this.dropboxService.uploadFile(image);
-      post.imagePath = uploadedImageLink;
+      post.imagePath = await this.dropboxService.uploadFile(image);
       await post.save();
     }
-
-    return await this.postModel.findByPk(post.id, { include: [User, Like] });
+    const rawPost = await this.postModel.findByPk(post.id, {
+      include: [User, Like, Comment, { model: Comment, include: [User] }],
+    });
+    return parsePostToDto(rawPost);
   }
 
   public async update(postUpdateData: PostDto): Promise<Post> {
