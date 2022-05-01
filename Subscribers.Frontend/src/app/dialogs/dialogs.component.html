@@ -1,1 +1,31 @@
-<p>dialogs works!</p>
+<div class="dialogs-wrapper">
+  <div class="dialogs-users">
+    <div class="search-section">
+
+    </div>
+    <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="items">
+      <mat-selection-list [multiple]="false">
+        <mat-list-option *ngFor="let user of users">
+          <div class="dialogs-user-info">
+            <img
+              mat-card-avatar
+              class="user-avatar"
+              src="{{ user.avatarPath }}"
+              alt="Avatar image"
+            >
+            <span>
+            {{ user.email }}
+          </span>
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </cdk-virtual-scroll-viewport>
+
+    <div class="dialogs-users-footer">
+
+    </div>
+  </div>
+  <div class="chat-section">
+
+  </div>
+</div>

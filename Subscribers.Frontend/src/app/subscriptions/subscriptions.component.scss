@@ -3,13 +3,13 @@
   text-align: center;
 }
 
+::ng-deep .mat-list-item-content {
+  width: 100%;
+}
+
 .subscription-item {
   display: flex;
   justify-content: space-between;
-
-  .mat-list-item-content {
-    width: 100%;
-  }
 
   .subscription-wrapper {
     width: 100%;
@@ -23,6 +23,9 @@
 
       .subscription-avatar {
         margin-right: 0.5rem;
+        width: 2.7rem;
+        height: 2.7rem;
+        border-radius: 100%;
       }
     }
 

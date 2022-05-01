@@ -1,0 +1,69 @@
+@import '../../styles/variables.scss';
+
+::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 0.25rem;
+  overflow-y: scroll;
+  background: grey;
+  box-shadow: inset 0 0 4px #707070;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $main-color;
+  border-radius: 10px;
+}
+
+:host ::ng-deep .mat-list-base {
+  padding: 0;
+}
+
+.dialogs-wrapper {
+  width: 100%;
+  height: calc(100vh - 2.8rem - 2rem);
+  background-color: $secondary-color;
+  border-radius: 0.5rem;
+  display: grid;
+  grid-template-columns: 0.45fr 1fr;
+
+  .dialogs-users {
+    background-color: #424242;
+    border-radius: 0.5rem 0 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 2.8rem - 2rem);
+
+    .search-section {
+      padding: 2rem;
+      border-bottom: solid 0.01rem #595959;
+    }
+
+    .items {
+      padding: 0;
+      height: 100%;
+      overflow-x: hidden;
+
+      .dialogs-user-info {
+        display: flex;
+        align-items: center;
+        font-size: 0.8rem;
+
+        .user-avatar {
+          margin-right: 0.5rem;
+          width: 2.3rem;
+          height: 2.3rem;
+          border-radius: 100%;
+        }
+      }
+    }
+
+    .dialogs-users-footer {
+      padding: 1.5rem;
+      border-top: solid 0.01rem #595959;
+    }
+  }
+
+  .chat-section {
+    background-color: #313131;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+}

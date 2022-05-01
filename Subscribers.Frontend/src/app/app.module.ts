@@ -36,6 +36,7 @@ import { SubscriptionsComponent } from './subscriptions/subscriptions.component'
 import { MatListModule } from '@angular/material/list';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatBadgeModule } from '@angular/material/badge';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatProgressSpinnerModule,
     MatListModule,
     MatBadgeModule,
+    ScrollingModule,
   ],
   providers: [
     PostService,
