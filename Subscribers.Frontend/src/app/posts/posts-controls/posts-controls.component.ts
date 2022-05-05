@@ -19,7 +19,7 @@ export class PostsControlsComponent {
     this.dialog.open(
       PostFormComponent,
       {
-        width: '37.5rem',
+        width: '33.5rem',
         data: <PostFormProps>{
           post: post,
           dialogTitle: isEditMode ? 'Редактирование поста' : 'Создание нового поста',

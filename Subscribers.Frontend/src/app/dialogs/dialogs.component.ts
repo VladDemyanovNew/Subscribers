@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../services/models/user';
-import { SubscriptionItem } from '../services/models/subscription';
 import { UserService } from '../services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'app-dialogs',
@@ -12,6 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class DialogsComponent implements OnInit {
 
   public users: User[] = [];
+
+  public selectedUser?: User;
 
   constructor(
     private userService: UserService,
@@ -39,4 +41,7 @@ export class DialogsComponent implements OnInit {
       });
   }
 
+  public onSelectUser(selection: MatSelectionListChange): void {
+    this.selectedUser = selection.options[0].value;
+  }
 }

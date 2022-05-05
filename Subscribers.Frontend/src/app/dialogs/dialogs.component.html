@@ -1,11 +1,14 @@
 <div class="dialogs-wrapper">
   <div class="dialogs-users">
     <div class="search-section">
-
     </div>
     <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="items">
-      <mat-selection-list [multiple]="false">
-        <mat-list-option *ngFor="let user of users">
+      <mat-selection-list
+        #test
+        [multiple]="false"
+        (selectionChange)="onSelectUser($event)"
+      >
+        <mat-list-option *ngFor="let user of users" [value]="user">
           <div class="dialogs-user-info">
             <img
               mat-card-avatar
@@ -14,8 +17,8 @@
               alt="Avatar image"
             >
             <span>
-            {{ user.email }}
-          </span>
+              {{ user.email }}
+            </span>
           </div>
         </mat-list-option>
       </mat-selection-list>
@@ -25,7 +28,66 @@
 
     </div>
   </div>
-  <div class="chat-section">
 
+  <div class="empty-chat" *ngIf="!selectedUser">
+    <div class="chat-icon-wrapper">
+      <mat-icon aria-label="Chat" class="chat-icon">chat</mat-icon>
+    </div>
+    <div>
+      <span>Выберите чат</span>
+    </div>
+  </div>
+
+  <div class="chat-section" *ngIf="selectedUser">
+    <div class="chat-header">
+      <span class="selected-user-name">
+        {{ selectedUser?.email }}
+      </span>
+      <img
+        mat-card-avatar
+        class="selected-user-avatar"
+        src="{{ selectedUser?.avatarPath }}"
+        alt="Avatar image"
+      >
+    </div>
+
+    <cdk-virtual-scroll-viewport class="messages" appendOnly itemSize="50">
+      <div *ngFor="let user of users" class="chat-message">
+        <img
+          mat-card-avatar
+          class="message-avatar"
+          src="{{ user.avatarPath }}"
+          alt="Avatar image"
+        >
+        <div class="message-data">
+          <span class="message-data-user-name">
+          {{ user.email }}
+          </span>
+          <span>
+            testsetset setsetset
+          </span>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+
+    <div class="controls">
+      <form
+        id="chat-form"
+      >
+        <mat-form-field appearance="fill" class="chat-input">
+          <mat-label>Отправьте сообщение</mat-label>
+          <input matInput placeholder="Привет!...">
+        </mat-form-field>
+      </form>
+      <button
+        mat-icon-button
+        matTooltip="Отправить"
+        class="send-btn"
+        type="submit"
+        form="chat-form"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
