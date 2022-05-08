@@ -7,4 +7,6 @@ export class ApiEndpoints {
   public static Auth = `${ environment.apiBaseUrl }/auth`;
 
   public static Users = `${ environment.apiBaseUrl }/users`;
+
+  public static Chats = `${ environment.apiBaseUrl }/chats`;
 }

@@ -19,7 +19,7 @@
         </span>
       </div>
       <div>
-        <button mat-icon-button class="create-dialog-btn">
+        <button (click)="createChat(subscription.subscription)" mat-icon-button class="create-dialog-btn">
           <mat-icon matTooltip="Написать сообщение">comment</mat-icon>
         </button>
         <button

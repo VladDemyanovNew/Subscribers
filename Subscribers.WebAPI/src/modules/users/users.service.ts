@@ -10,7 +10,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { UserDto } from '../../common/dtos/user.dto';
 import { Queries } from '../../common/sql/queries';
 import { parseUserToDto } from '../../common/helpers/user.helper';
-import { QueryTypes } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 import { getNRandomElements } from '../../common/helpers/array.helper';
 
 @Injectable()
@@ -38,8 +38,16 @@ export class UsersService {
     return user;
   }
 
-  public async getAll(): Promise<User[]> {
-    return await this.userModel.findAll({ include: [Role, Subscription] })
+  public async getAll(name?: string): Promise<User[]> {
+    let filter = {};
+    if (name) {
+      filter = {
+        email: {
+          [Op.like]: `%${ name }%`,
+        },
+      };
+    }
+    return await this.userModel.findAll({ include: [Role, Subscription], where: filter });
   }
 
   public async getUserSubscriptions(userId: number): Promise<UserDto[]> {

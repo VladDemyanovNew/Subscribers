@@ -6,7 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Post,
+  Post, Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -33,8 +33,8 @@ export class UsersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  public async getAll(): Promise<User[]> {
-    return await this.usersService.getAll();
+  public async getAll(@Query('name') name?: string): Promise<User[]> {
+    return await this.usersService.getAll(name);
   }
 
   @Get(':userId/subscriptions')

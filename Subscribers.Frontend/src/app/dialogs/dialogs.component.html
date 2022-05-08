@@ -1,21 +1,101 @@
 <div class="dialogs-wrapper">
   <div class="dialogs-users">
     <div class="search-section">
+      <form
+        [formGroup]="searchFormGroup"
+        (ngSubmit)="searchUser()"
+        class="search"
+      >
+        <mat-icon aria-hidden="false" class="search-icon" aria-label="search icon">search</mat-icon>
+        <input
+          formControlName="search"
+          (click)="openSearch()"
+          type="text"
+          class="searchTerm"
+          placeholder="Поиск"
+        >
+        <div class="close-search-section">
+          <button
+            (click)="closeSearch()"
+            [hidden]="!isSearch"
+            type="button"
+            mat-icon-button
+            matTooltip="Отмена"
+            class="close-btn"
+          >
+            <mat-icon aria-hidden="false" class="close-icon">close</mat-icon>
+          </button>
+        </div>
+      </form>
     </div>
-    <cdk-virtual-scroll-viewport appendOnly itemSize="13" class="items">
+
+    <div class="warning" *ngIf="chats.length === 0">
+      <h4>Создайте чат с одим из пользователей...</h4>
+    </div>
+
+    <div class="users" *ngIf="isSearch">
+      <div class="warning" *ngIf="emptySearchResult">
+        <h4>По вашему запросу ничего не найдено :(</h4>
+      </div>
+      <mat-nav-list  *ngIf="!emptySearchResult">
+        <a *ngFor="let user of foundUsers" mat-list-item>
+          <div class="user-content">
+            <div class="user-info">
+              <img
+                mat-card-avatar
+                class="user-avatar"
+                src="{{ user.subscription.avatarPath }}"
+                alt="Avatar image"
+              >
+              <span>
+                {{ user.subscription.email }}
+              </span>
+            </div>
+            <div class="user-controls">
+              <button (click)="createChat(user.subscription)" mat-icon-button>
+                <mat-icon matTooltip="Написать сообщение">comment</mat-icon>
+              </button>
+              <button
+                *ngIf="!user.isSubscribed"
+                (click)="subscribe(user)"
+                class="subscription-btn"
+                mat-button
+              >
+                Подписаться
+              </button>
+              <button
+                *ngIf="user.isSubscribed"
+                (click)="unsubscribe(user)"
+                class="subscription-btn gray"
+                mat-button
+              >
+                Отписаться
+              </button>
+            </div>
+          </div>
+        </a>
+      </mat-nav-list>
+    </div>
+
+    <cdk-virtual-scroll-viewport
+      *ngIf="chats.length !== 0 && !isSearch"
+      appendOnly
+      itemSize="13"
+      class="items"
+    >
       <mat-selection-list
         [multiple]="false"
-        (selectionChange)="onSelectUser($event)"
+        #selectionList
+        (selectionChange)="onSelectChat($event.options[0].value)"
       >
         <mat-list-option
-          *cdkVirtualFor="let chat of chats"
-          class=""
+          *ngFor="let chat of chats"
           [value]="chat"
         >
           <div class="dialogs-user-info">
             <img
               mat-card-avatar
-              class="user-avatar"
+              class="chat-avatar"
               src="{{ getCompanion(chat.users)?.avatarPath }}"
               alt="Avatar image"
             >
@@ -28,7 +108,6 @@
     </cdk-virtual-scroll-viewport>
 
     <div class="dialogs-users-footer">
-
     </div>
   </div>
 
@@ -54,7 +133,12 @@
       >
     </div>
 
+    <div class="warning" *ngIf="selectedChat.messages.length === 0">
+      <h4>Отправьте первое сообщение ;)</h4>
+    </div>
+
     <cdk-virtual-scroll-viewport
+      *ngIf="selectedChat.messages.length !== 0"
       #scrollSection
       class="messages"
       appendOnly
@@ -84,7 +168,7 @@
     <div class="controls">
       <form
         id="chat-form"
-        [formGroup]="formGroup"
+        [formGroup]="messageFormGroup"
         (ngSubmit)="onMessageSend(message.value)"
       >
         <mat-form-field appearance="fill" class="chat-input">
@@ -103,7 +187,7 @@
         class="send-btn"
         type="submit"
         form="chat-form"
-        [disabled]="formGroup.invalid"
+        [disabled]="messageFormGroup.invalid"
       >
         <mat-icon>send</mat-icon>
       </button>

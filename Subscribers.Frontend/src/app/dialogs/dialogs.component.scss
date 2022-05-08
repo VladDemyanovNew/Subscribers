@@ -8,6 +8,10 @@
   box-shadow: inset 0 0 4px #707070;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 ::-webkit-scrollbar-thumb {
   background: $main-color;
   border-radius: 10px;
@@ -19,6 +23,16 @@
 
 $chat-header-height: 1rem;
 $chat-footer-height: 3rem;
+
+.warning {
+  padding: 2rem;
+  color: white;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 
 .dialogs-wrapper {
   width: 100%;
@@ -36,14 +50,106 @@ $chat-footer-height: 3rem;
     max-height: calc(100vh - 2.8rem - 2rem);
 
     .search-section {
-      padding: 2rem;
+      padding: 0.8rem;
       border-bottom: solid 0.01rem #595959;
+      color: white;
+
+      .search {
+        display: flex;
+        align-items: center;
+
+        .close-search-section {
+          width: 1.5rem;
+          height: 1.2rem;
+          display: flex;
+          align-items: center;
+
+          .close-btn {
+            height:26px;
+            width:26px;
+            display: flex;
+            align-items: center;
+            padding-bottom: 0.2rem;
+            justify-content: center;
+
+            ::ng-deep .mat-icon{
+              height:20px !important;
+              width:20px !important;
+              font-size:20px !important;
+            }
+          }
+        }
+
+        .search-icon {
+          color: gray;
+        }
+
+        .close-icon {
+          color: gray;
+        }
+
+        .searchTerm {
+          background: none;
+          border: none;
+          color: white;
+          outline: none;
+          font-size: 0.9rem;
+          padding-left: 0.5rem;
+        }
+      }
+    }
+
+    .users {
+      height: 100%;
+      overflow-x: hidden;
+      font-size: 0.8rem;
+
+      .user-content {
+        display: flex;
+        flex-direction: column;
+
+        .user-info {
+          font-size: 0.8rem;
+          display: flex;
+          align-items: center;
+          padding-bottom: 0.2rem;
+
+          .user-avatar {
+            margin-right: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 100%;
+          }
+        }
+
+        .user-controls {
+          .subscription-btn {
+            font-size: 0.7rem;
+            background-color: #f44336;
+            cursor: pointer;
+            transform: scale(0.8);
+          }
+
+          .gray {
+            background-color: gray;
+          }
+        }
+      }
+
+      ::ng-deep .mat-list-item {
+        height: 6rem;
+      }
     }
 
     .items {
       padding: 0;
       height: 100%;
       overflow-x: hidden;
+
+      ::ng-deep .mat-selection-list {
+        display: flex;
+        flex-direction: column-reverse;
+      }
 
       ::ng-deep .mat-list-item {
         height: 4rem;
@@ -54,7 +160,7 @@ $chat-footer-height: 3rem;
         align-items: center;
         font-size: 0.8rem;
 
-        .user-avatar {
+        .chat-avatar {
           margin-right: 0.5rem;
           width: 3rem;
           height: 3rem;

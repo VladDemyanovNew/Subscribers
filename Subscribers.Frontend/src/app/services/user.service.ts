@@ -12,8 +12,12 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  public getAll(): Observable<User[]> {
-    return this.http.get<User[]>(`${ ApiEndpoints.Users }`);
+  public getAll(name?: string): Observable<User[]> {
+    let filter = '';
+    if (name) {
+      filter = `?name=${ name }`;
+    }
+    return this.http.get<User[]>(`${ ApiEndpoints.Users }${ filter }`);
   }
 
   public getRecommendationsForSubscribe(userId: number): Observable<User[]> {

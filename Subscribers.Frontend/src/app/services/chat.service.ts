@@ -14,4 +14,8 @@ export class ChatService {
   public getUserChats(userId: number): Observable<Chat[]> {
     return this.http.get<Chat[]>(`${ ApiEndpoints.Users }/${ userId }/chats`);
   }
+
+  public create(chatCreateData: Chat): Observable<Chat> {
+    return this.http.post<Chat>(`${ ApiEndpoints.Chats }`, chatCreateData);
+  }
 }
