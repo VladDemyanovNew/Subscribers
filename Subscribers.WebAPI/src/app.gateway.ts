@@ -6,9 +6,11 @@ import {
   WebSocketGateway, WebSocketServer
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { RolesService } from './modules/roles/roles.service';
+import { MessagesService } from './modules/messages/messages.service';
+import { Message } from './common/models/messages.model';
 
-@WebSocketGateway({
+@WebSocketGateway(3003, {
+  namespace: 'ws',
   cors: {
     origin: '*',
   },
@@ -16,17 +18,27 @@ import { RolesService } from './modules/roles/roles.service';
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()
-  server: Server;
+  public server: Server;
 
-  constructor(private roleService: RolesService) {
+  constructor(private messagesService: MessagesService) {
   }
 
-  @SubscribeMessage('message')
-  public async handleMessage(client: Socket, payload: string): Promise<void> {
-    console.log(payload);
-    const test = await this.roleService.getRole('ADMIN');
-    console.log(test);
-    this.server.emit('msgToClient', payload);
+  @SubscribeMessage('sendPrivateMessageToServer')
+  public async handlePrivateMessage(client: Socket, messageCreateData: Message): Promise<void> {
+    const message = await this.messagesService.create(messageCreateData);
+    this.server
+      .in(messageCreateData.chatId.toString())
+      .emit('sendPrivateMessageToClient', message);
+  }
+
+  @SubscribeMessage('joinPrivateRoom')
+  public handleJoinPrivateRoom(client: Socket, roomId: number): void {
+    client.join(roomId.toString());
+  }
+
+  @SubscribeMessage('leavePrivateRoom')
+  public handleLeavePrivateRoom(client: Socket, roomId: number): void {
+    client.leave(roomId.toString());
   }
 
   public afterInit(server: Server): void {

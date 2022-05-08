@@ -18,7 +18,10 @@
           {{ subscription.subscription.email }}
         </span>
       </div>
-      <div class="controls">
+      <div>
+        <button mat-icon-button class="create-dialog-btn">
+          <mat-icon matTooltip="Написать сообщение">comment</mat-icon>
+        </button>
         <button
           (click)="subscribe(subscription)"
           *ngIf="!subscription.isSubscribed"

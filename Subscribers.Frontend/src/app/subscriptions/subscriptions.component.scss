@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+::ng-deep .mat-nav-list .mat-list-item {
+  height: 4rem;
+}
+
 .subscription-item {
   display: flex;
   justify-content: space-between;
@@ -16,6 +20,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .create-dialog-btn {
+      margin-right: 0.5rem;
+    }
 
     .subscription-info {
       display: flex;

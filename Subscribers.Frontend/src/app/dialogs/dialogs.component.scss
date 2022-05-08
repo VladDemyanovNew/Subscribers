@@ -45,6 +45,10 @@ $chat-footer-height: 3rem;
       height: 100%;
       overflow-x: hidden;
 
+      ::ng-deep .mat-list-item {
+        height: 4rem;
+      }
+
       .dialogs-user-info {
         display: flex;
         align-items: center;
@@ -52,8 +56,8 @@ $chat-footer-height: 3rem;
 
         .user-avatar {
           margin-right: 0.5rem;
-          width: 2.3rem;
-          height: 2.3rem;
+          width: 3rem;
+          height: 3rem;
           border-radius: 100%;
         }
       }
@@ -116,11 +120,19 @@ $chat-footer-height: 3rem;
       height: 100%;
       overflow-x: hidden;
 
+      ::ng-deep.cdk-virtual-scroll-content-wrapper {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .message-right {
+        justify-content: right;
+      }
+
       .chat-message {
         margin-bottom: 0.5rem;
-        padding: 1rem;
+        padding: 1rem 3rem 1rem 2.2rem;
         display: flex;
-
 
         .message-data {
           display: flex;

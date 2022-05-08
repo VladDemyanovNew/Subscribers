@@ -37,6 +37,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { SocketIoModule } from 'ngx-socket-io';
+import { environment } from '../environments/environment';
+import { WebsocketService } from './services/websocket.service';
+import { ChatService } from './services/chat.service';
 
 @NgModule({
   declarations: [
@@ -74,13 +78,18 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatListModule,
     MatBadgeModule,
     ScrollingModule,
+    SocketIoModule.forRoot({
+      url: environment.wsBaseUrl,
+    }),
   ],
   providers: [
     PostService,
     AuthenticationService,
     ItemManagementService,
     MatBottomSheet,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    WebsocketService,
+    ChatService,
   ],
   bootstrap: [AppComponent]
 })

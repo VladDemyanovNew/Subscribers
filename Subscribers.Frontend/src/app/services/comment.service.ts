@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Post } from './models/post';
 import { Observable } from 'rxjs';
 import { ApiEndpoints } from '../common/api-endpoints';
 import { HttpClient } from '@angular/common/http';

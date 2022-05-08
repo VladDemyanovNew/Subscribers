@@ -2,22 +2,25 @@
   <div class="dialogs-users">
     <div class="search-section">
     </div>
-    <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="items">
+    <cdk-virtual-scroll-viewport appendOnly itemSize="13" class="items">
       <mat-selection-list
-        #test
         [multiple]="false"
         (selectionChange)="onSelectUser($event)"
       >
-        <mat-list-option *ngFor="let user of users" [value]="user">
+        <mat-list-option
+          *cdkVirtualFor="let chat of chats"
+          class=""
+          [value]="chat"
+        >
           <div class="dialogs-user-info">
             <img
               mat-card-avatar
               class="user-avatar"
-              src="{{ user.avatarPath }}"
+              src="{{ getCompanion(chat.users)?.avatarPath }}"
               alt="Avatar image"
             >
             <span>
-              {{ user.email }}
+              {{ getCompanion(chat.users)?.email }}
             </span>
           </div>
         </mat-list-option>
@@ -29,7 +32,7 @@
     </div>
   </div>
 
-  <div class="empty-chat" *ngIf="!selectedUser">
+  <div class="empty-chat" *ngIf="!selectedChat">
     <div class="chat-icon-wrapper">
       <mat-icon aria-label="Chat" class="chat-icon">chat</mat-icon>
     </div>
@@ -38,33 +41,41 @@
     </div>
   </div>
 
-  <div class="chat-section" *ngIf="selectedUser">
+  <div class="chat-section" *ngIf="selectedChat">
     <div class="chat-header">
       <span class="selected-user-name">
-        {{ selectedUser?.email }}
+        {{ getCompanion(selectedChat.users)?.email }}
       </span>
       <img
         mat-card-avatar
         class="selected-user-avatar"
-        src="{{ selectedUser?.avatarPath }}"
+        src="{{ getCompanion(selectedChat.users)?.avatarPath }}"
         alt="Avatar image"
       >
     </div>
 
-    <cdk-virtual-scroll-viewport class="messages" appendOnly itemSize="50">
-      <div *ngFor="let user of users" class="chat-message">
+    <cdk-virtual-scroll-viewport
+      #scrollSection
+      class="messages"
+      appendOnly
+      itemSize="10"
+    >
+      <div
+        *ngFor="let message of selectedChat.messages"
+        class="chat-message {{ getMessageStyle(message.sender?.id) }}"
+      >
         <img
           mat-card-avatar
           class="message-avatar"
-          src="{{ user.avatarPath }}"
+          src="{{ message.sender?.avatarPath }}"
           alt="Avatar image"
         >
         <div class="message-data">
           <span class="message-data-user-name">
-          {{ user.email }}
+            {{ message.sender?.email }}
           </span>
           <span>
-            testsetset setsetset
+            {{ message.content }}
           </span>
         </div>
       </div>
@@ -73,10 +84,17 @@
     <div class="controls">
       <form
         id="chat-form"
+        [formGroup]="formGroup"
+        (ngSubmit)="onMessageSend(message.value)"
       >
         <mat-form-field appearance="fill" class="chat-input">
           <mat-label>Отправьте сообщение</mat-label>
-          <input matInput placeholder="Привет!...">
+          <input
+            formControlName="message"
+            matInput
+            #message
+            placeholder="Привет!..."
+          >
         </mat-form-field>
       </form>
       <button
@@ -85,6 +103,7 @@
         class="send-btn"
         type="submit"
         form="chat-form"
+        [disabled]="formGroup.invalid"
       >
         <mat-icon>send</mat-icon>
       </button>

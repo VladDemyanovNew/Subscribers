@@ -14,6 +14,11 @@ import { Comment } from './common/models/comments.model';
 import { AppGateway } from './app.gateway';
 import { AuthModule } from './modules/auth/auth.module';
 import { CommentsModule } from './modules/comments/comments.module';
+import { Message } from './common/models/messages.model';
+import { Chat } from './common/models/chats.model';
+import { ChatUsers } from './common/models/chat-users.model';
+import { ChatsModule } from './modules/chats/chats.module';
+import { MessagesModule } from './modules/messages/messages.module';
 
 @Module({
   imports: [
@@ -36,6 +41,9 @@ import { CommentsModule } from './modules/comments/comments.module';
         Like,
         Subscription,
         Comment,
+        Message,
+        Chat,
+        ChatUsers,
       ],
     }),
     UsersModule,
@@ -43,6 +51,8 @@ import { CommentsModule } from './modules/comments/comments.module';
     PostsModule,
     AuthModule,
     CommentsModule,
+    ChatsModule,
+    MessagesModule,
   ],
   providers: [AppGateway],
 })
