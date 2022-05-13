@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Post } from '../../common/models/posts.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { PostDto } from '../../common/dtos/post.dto';
@@ -17,6 +17,8 @@ export class PostsService {
   constructor(
     @InjectModel(Post)
     private postModel: typeof Post,
+    @InjectModel(Like)
+    private likeModel: typeof Like,
     private userService: UsersService,
     private dropboxService: DropboxService) {
   }
@@ -83,5 +85,49 @@ export class PostsService {
 
   public async findById(postId: number): Promise<Post> {
     return await this.postModel.findByPk(postId);
+  }
+
+  public async like(postId: number, ownerId: number): Promise<void> {
+    const doesPostExist = !isNil(await this.postModel.findByPk(postId));
+    if (!doesPostExist) {
+      throw new BadRequestException(`Cannot create like for post with id=${ postId }, ` +
+        'because it is not found');
+    }
+
+    const doesLikeExist = !isNil(await this.likeModel.findOne({
+      where: {
+        postId: postId,
+        ownerId: ownerId,
+      },
+    }));
+    if (doesLikeExist) {
+      throw new BadRequestException(`Cannot create like for post with id=${ postId }, ` +
+        'because like is already exist');
+    }
+
+    await this.likeModel.create(<Like> {
+      postId: postId,
+      ownerId: ownerId,
+    });
+  }
+
+  public async dislike(postId: number, ownerId: number): Promise<void> {
+    const doesLikeExist = !isNil(await this.likeModel.findOne({
+      where: {
+        postId: postId,
+        ownerId: ownerId,
+      },
+    }));
+    if (!doesLikeExist) {
+      throw new BadRequestException(`Cannot delete like from post with id=${ postId }, ` +
+        'because like is not found');
+    }
+
+    await this.likeModel.destroy({
+      where: {
+        postId: postId,
+        ownerId: ownerId,
+      },
+    });
   }
 }

@@ -7,12 +7,14 @@ import {
   HttpStatus,
   UseInterceptors,
   UploadedFile,
-  Query
+  Query, UseGuards, Param, Delete
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostDto } from '../../common/dtos/post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
+import { JwtAccessAuthGuard } from '../auth/guards/jwt-access-auth.guard';
+import { Like } from '../../common/models/likes.model';
 
 @Controller('posts')
 export class PostsController {
@@ -21,6 +23,7 @@ export class PostsController {
   }
 
   @Get()
+  @UseGuards(JwtAccessAuthGuard)
   @HttpCode(HttpStatus.OK)
   public async findSelected(
     @Query('take') take: number,
@@ -37,5 +40,21 @@ export class PostsController {
     @Body() postCreateData: PostDto,
   ): Promise<PostDto> {
     return await this.postService.create(postCreateData, image);
+  }
+
+  @Post('/:postId/likes')
+  @HttpCode(HttpStatus.CREATED)
+  public async like(
+    @Param('postId') postId: string,
+    @Query('ownerId') ownerId: string): Promise<void> {
+    await this.postService.like(Number(postId), Number(ownerId));
+  }
+
+  @Delete('/:postId/likes')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async dislike(
+    @Param('postId') postId: string,
+    @Query('ownerId') ownerId: string): Promise<void> {
+    await this.postService.dislike(Number(postId), Number(ownerId));
   }
 }

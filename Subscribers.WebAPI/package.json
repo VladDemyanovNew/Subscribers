@@ -37,6 +37,8 @@
     "class-validator": "^0.13.2",
     "crypto": "^1.0.1",
     "dropbox": "^10.28.0",
+    "dropbox-v2-api": "^2.5.3",
+    "node-fetch": "^3.2.4",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",

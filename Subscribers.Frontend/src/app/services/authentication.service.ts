@@ -7,6 +7,7 @@ import { ApiEndpoints } from '../common/api-endpoints';
 import { Tokens } from './models/tokens';
 import jwtDecode from 'jwt-decode';
 import { JwtPayload } from './models/jwt-payload';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class AuthenticationService {
     this.currentUserSubject?.next(currentUser);
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.currentUserSubject = new BehaviorSubject<Tokens | null>(
       JSON.parse(<string>localStorage.getItem(CurrentUser)),
     );
@@ -63,10 +64,9 @@ export class AuthenticationService {
   }
 
   public logout(): void {
-    this.http.post<void>(`${ ApiEndpoints.Auth }/logout`, {})
-      .subscribe(response => {
-        localStorage.removeItem(CurrentUser);
-        this.currentUserSubject?.next(null);
-      });
+    localStorage.removeItem(CurrentUser);
+    this.currentUserSubject?.next(null);
+    this.router?.navigate(['/signin']);
+    this.http.post<void>(`${ ApiEndpoints.Auth }/logout`, {});
   }
 }

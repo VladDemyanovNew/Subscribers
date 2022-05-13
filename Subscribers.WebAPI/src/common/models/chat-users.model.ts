@@ -13,6 +13,6 @@ export class ChatUsers extends Model<ChatUsers> {
 
   @ForeignKey(() => Chat)
   @IsNotEmpty()
-  @Column({ type: DataType.INTEGER, primaryKey: true, allowNull: false })
+  @Column({ type: DataType.INTEGER, primaryKey: true, allowNull: false, onDelete: 'CASCADE' })
   chatId: number;
 }

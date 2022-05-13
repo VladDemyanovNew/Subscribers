@@ -25,4 +25,12 @@ export class PostService {
 
     return this.http.post<Post>(`${ ApiEndpoints.Posts }`, formData);
   }
+
+  public like(postId: number, ownerId: number): Observable<void> {
+    return this.http.post<void>(`${ ApiEndpoints.Posts }/${ postId }/likes?ownerId=${ ownerId }`, {});
+  }
+
+  public dislike(postId: number, ownerId: number): Observable<void> {
+    return this.http.delete<void>(`${ ApiEndpoints.Posts }/${ postId }/likes?ownerId=${ ownerId }`);
+  }
 }

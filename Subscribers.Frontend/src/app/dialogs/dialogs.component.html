@@ -29,7 +29,7 @@
       </form>
     </div>
 
-    <div class="warning" *ngIf="chats.length === 0">
+    <div class="warning" *ngIf="chats.length === 0 && !isSearch">
       <h4>Создайте чат с одим из пользователей...</h4>
     </div>
 
@@ -52,7 +52,10 @@
               </span>
             </div>
             <div class="user-controls">
-              <button (click)="createChat(user.subscription)" mat-icon-button>
+              <button
+                (click)="createChat(user.subscription)"
+                mat-icon-button
+              >
                 <mat-icon matTooltip="Написать сообщение">comment</mat-icon>
               </button>
               <button

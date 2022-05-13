@@ -41,6 +41,7 @@ import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from '../environments/environment';
 import { WebsocketService } from './services/websocket.service';
 import { ChatService } from './services/chat.service';
+import { ErrorInterceptor } from './common/interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { ChatService } from './services/chat.service';
     ItemManagementService,
     MatBottomSheet,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     WebsocketService,
     ChatService,
   ],

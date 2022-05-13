@@ -37,10 +37,20 @@
       <mat-card-actions>
         <button
           mat-icon-button
+          (click)="onDislike(feedItem.post)"
+          *ngIf="isAlreadyLike(feedItem.post)"
           color="warn"
+          matTooltip="Не понравилось"
+        >
+          <mat-icon matBadge="{{ feedItem.post.likes?.length }}">favorite</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="onLike(feedItem.post)"
+          *ngIf="!isAlreadyLike(feedItem.post)"
           matTooltip="Понравилось"
         >
-          <mat-icon matBadge="0">favorite</mat-icon>
+          <mat-icon matBadge="{{ feedItem.post.likes?.length }}">favorite_outline</mat-icon>
         </button>
         <button
           mat-icon-button

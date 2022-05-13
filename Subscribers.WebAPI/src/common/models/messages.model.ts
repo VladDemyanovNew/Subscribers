@@ -27,7 +27,7 @@ export class Message extends Model<Message> {
 
   @ForeignKey(() => Chat)
   @IsNotEmpty()
-  @Column({ type: DataType.INTEGER, allowNull: false, onDelete: 'NO ACTION' })
+  @Column({ type: DataType.INTEGER, allowNull: false, onDelete: 'CASCADE' })
   chatId: number;
 
   @BelongsTo(() => Chat, { foreignKey: 'chatId' })

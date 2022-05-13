@@ -19,6 +19,8 @@ import { Chat } from './common/models/chats.model';
 import { ChatUsers } from './common/models/chat-users.model';
 import { ChatsModule } from './modules/chats/chats.module';
 import { MessagesModule } from './modules/messages/messages.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAccessAuthGuard } from './modules/auth/guards/jwt-access-auth.guard';
 
 @Module({
   imports: [
@@ -54,7 +56,7 @@ import { MessagesModule } from './modules/messages/messages.module';
     ChatsModule,
     MessagesModule,
   ],
-  providers: [AppGateway],
+  providers: [AppGateway, { provide: APP_GUARD, useClass: JwtAccessAuthGuard }],
 })
 export class AppModule {
 }

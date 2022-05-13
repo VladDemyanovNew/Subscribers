@@ -1,6 +1,7 @@
 import { MaxLength } from 'class-validator';
 import { UserDto } from './user.dto';
 import { Comment } from '../models/comments.model';
+import { Like } from '../models/likes.model';
 
 export class PostDto {
 
@@ -19,4 +20,6 @@ export class PostDto {
   readonly owner?: UserDto;
 
   readonly comments?: Comment[];
+
+  readonly likes?: Like[];
 }

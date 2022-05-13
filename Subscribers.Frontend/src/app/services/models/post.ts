@@ -1,5 +1,6 @@
 import { User } from './user';
 import { Comment } from './comment';
+import { Like } from './like';
 
 export interface Post {
   id: number;
@@ -9,4 +10,5 @@ export interface Post {
   ownerId: number;
   owner?: User;
   comments?: Comment[],
+  likes?: Like[],
 }

@@ -113,7 +113,6 @@ export class DialogsComponent implements OnInit, OnDestroy {
     if (!this.currentUser) {
       return;
     }
-
     if (this.selectedChat) {
       this.websocketService.leaveRoom(this.selectedChat.id);
     }
@@ -236,9 +235,12 @@ export class DialogsComponent implements OnInit, OnDestroy {
         <User> {
           id: this.currentUser?.sub,
         },
-        user,
       ],
     };
+    if (user.id !== this.currentUser?.sub) {
+      chatCreateData.users.push(user);
+    }
+
     this.chatService.create(chatCreateData)
       .subscribe({
         next: (chat) => {

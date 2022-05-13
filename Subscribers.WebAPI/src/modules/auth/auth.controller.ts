@@ -10,6 +10,7 @@ import { JwtAccessAuthGuard } from './guards/jwt-access-auth.guard';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
+import { Public } from '../../common/decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -17,12 +18,14 @@ export class AuthController {
   constructor(private authService: AuthService) {
   }
 
+  @Public()
   @Post('/signin')
   @HttpCode(HttpStatus.OK)
   public async signin(@Body() authSigninData: User): Promise<Tokens> {
     return await this.authService.signin(authSigninData);
   }
 
+  @Public()
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('avatar'))

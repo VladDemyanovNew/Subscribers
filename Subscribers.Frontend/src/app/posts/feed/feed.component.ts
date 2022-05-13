@@ -7,6 +7,7 @@ import { CommentService } from '../../services/comment.service';
 import { JwtPayload } from '../../services/models/jwt-payload';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Comment } from '../../services/models/comment';
+import { Like } from '../../services/models/like';
 
 type FeedItem = {
   isComments: boolean,
@@ -99,6 +100,32 @@ export class FeedComponent implements OnInit {
             'Close',
             { duration: 3000 },
           );
+        },
+      });
+  }
+
+  public isAlreadyLike(post: Post): boolean {
+    return !!post.likes?.some(like => like.ownerId === this.currentUser?.sub);
+  }
+
+  public onLike(post: Post): void {
+    this.postService.like(post.id, Number(this.currentUser?.sub))
+      .subscribe({
+        next: () => {
+          post.likes?.push(<Like> { postId: post.id, ownerId: this.currentUser?.sub });
+        },
+      });
+  }
+
+  public onDislike(post: Post): void {
+    this.postService.dislike(post.id, Number(this.currentUser?.sub))
+      .subscribe({
+        next: () => {
+          const likeIndex = post.likes?.findIndex(like => like.ownerId === this.currentUser?.sub);
+          console.log(likeIndex);
+          if (likeIndex !== undefined) {
+            post.likes?.splice(likeIndex, 1);
+          }
         },
       });
   }

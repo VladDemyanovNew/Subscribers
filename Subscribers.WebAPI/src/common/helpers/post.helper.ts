@@ -18,5 +18,6 @@ export function parsePostToDto(post: Post): PostDto {
     title: post.title,
     owner: parseUserToDto(post.owner),
     comments: post.comments,
+    likes: post.likes,
   };
 }
