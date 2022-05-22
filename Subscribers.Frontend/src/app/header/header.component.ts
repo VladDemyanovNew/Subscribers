@@ -23,7 +23,6 @@ export class HeaderComponent {
 
   public logout(): void {
     this.authenticationService.logout();
-    this.router?.navigate(['/signin']);
   }
 
   public openBottomSheet(): void {

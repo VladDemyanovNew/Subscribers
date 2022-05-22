@@ -34,48 +34,67 @@
           {{ feedItem.post.content }}
         </p>
       </mat-card-content>
-      <mat-card-actions>
+      <mat-card-actions class="posts-controls">
+        <div>
+          <button
+            mat-icon-button
+            (click)="onDislike(feedItem.post)"
+            *ngIf="isAlreadyLike(feedItem.post)"
+            color="warn"
+            matTooltip="Не понравилось"
+          >
+            <mat-icon matBadge="{{ feedItem.post.likes?.length }}">favorite</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="onLike(feedItem.post)"
+            *ngIf="!isAlreadyLike(feedItem.post)"
+            matTooltip="Понравилось"
+          >
+            <mat-icon matBadge="{{ feedItem.post.likes?.length }}">favorite_outline</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            matTooltip="Комментарии"
+            (click)="onComment(feedItem)"
+          >
+            <mat-icon matBadgeColor="warn" matBadge="{{ feedItem?.post?.comments?.length }}">comment</mat-icon>
+          </button>
+        </div>
         <button
-          mat-icon-button
-          (click)="onDislike(feedItem.post)"
-          *ngIf="isAlreadyLike(feedItem.post)"
-          color="warn"
-          matTooltip="Не понравилось"
+          *ngIf="canUserDeletePost(feedItem)"
+          mat-button
+          (click)="openDeletePostDialog(feedItem)"
         >
-          <mat-icon matBadge="{{ feedItem.post.likes?.length }}">favorite</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          (click)="onLike(feedItem.post)"
-          *ngIf="!isAlreadyLike(feedItem.post)"
-          matTooltip="Понравилось"
-        >
-          <mat-icon matBadge="{{ feedItem.post.likes?.length }}">favorite_outline</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          matTooltip="Комментарии"
-          (click)="onComment(feedItem)"
-        >
-          <mat-icon matBadgeColor="warn" matBadge="{{ feedItem?.post?.comments?.length }}">comment</mat-icon>
+          Удалить
         </button>
       </mat-card-actions>
 
       <div *ngIf="feedItem.isComments" class="comments-section">
-        <div class="comments-input">
+        <form
+          [formGroup]="form"
+          (ngSubmit)="sendComment(feedItem.post, commentInput.value)"
+          class="comments-input"
+        >
           <mat-form-field appearance="fill">
             <mat-label>Оставьте комментарий</mat-label>
-            <input matInput maxlength="800" #commentInput placeholder="Отличный пост...">
+            <input
+              formControlName="message"
+              matInput
+              maxlength="800"
+              #commentInput
+              placeholder="Отличный пост..."
+            >
           </mat-form-field>
           <button
-            (click)="sendComment(feedItem.post, commentInput.value)"
+            type="submit"
             mat-icon-button
             matTooltip="Отправить"
             class="send-btn"
           >
             <mat-icon>send</mat-icon>
           </button>
-        </div>
+        </form>
         <mat-nav-list>
           <a *ngFor="let comment of feedItem.post.comments?.reverse()" mat-list-item class="comment-item">
             <div class="comment-wrapper">
@@ -101,6 +120,10 @@
 
     <div *ngIf="isLoading" class="spinner-section">
       <mat-spinner [diameter]="60"></mat-spinner>
+    </div>
+
+    <div *ngIf="posts.length === 0 && !isLoading" class="warning">
+      <h4>Пока постов нет :( Но вы можете создать первый!</h4>
     </div>
   </div>
 

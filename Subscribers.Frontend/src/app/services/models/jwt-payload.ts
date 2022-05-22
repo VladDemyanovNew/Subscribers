@@ -1,4 +1,3 @@
-
 type RoleType = { id: number, name: string };
 
 export interface JwtPayload {

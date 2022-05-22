@@ -1,7 +1,6 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
 import { ROLES_KEY } from '../../../common/decorators/roles.decorator';
 import { JwtPayload } from '../../../common/types/jwt-payload.type';
 import { RoleName } from '../../../common/enums/role-name';
@@ -44,7 +43,7 @@ export class JwtAccessAuthGuard extends AuthGuard('jwt') {
       secret: process.env.AT_SECRET_KEY,
     }) as JwtPayload;
 
-    const doRolesValid = payload.roles.some(role => requiredRoles.includes(role.name as RoleName))
-    return doRolesValid && canActivate;
+    const areRolesValid = payload.roles.some(role => requiredRoles.includes(role.name as RoleName))
+    return areRolesValid && canActivate;
   }
 }

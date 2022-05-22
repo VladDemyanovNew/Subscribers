@@ -130,4 +130,16 @@ export class PostsService {
       },
     });
   }
+
+  public async delete(postId: number): Promise<void> {
+    const doesPostExist = !isNil(await this.postModel.findByPk(postId));
+    if (!doesPostExist) {
+      throw new HttpException(
+        `Can't delete post with id=${ postId }, because it doesn't exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    await this.postModel.destroy({ where: { id: postId } });
+  }
 }

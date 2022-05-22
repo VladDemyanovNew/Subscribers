@@ -1,9 +1,30 @@
 @import '../../../styles/variables.scss';
 
 .feed {
+  .warning {
+    padding: 2rem;
+    color: white;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: $secondary-color;
+    border-radius: 0.2rem;
+
+    h4 {
+      margin: 0;
+    }
+  }
+
   .example-card {
     background: $secondary-color;
     margin-bottom: 1rem;
+
+    .posts-controls {
+      display: flex;
+      justify-content: space-between;
+    }
 
     .example-header-image {
       background-size: cover;

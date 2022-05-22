@@ -11,10 +11,10 @@
         class="dropzone"
         (change)="onSelectFile($event)"
       >
-        <ngx-dropzone-label>
-        <span *ngIf="dialogProps.isEditMode">
-          Ссылка на картинку: {{ dialogProps.post?.imagePath }}
-        </span>
+        <ngx-dropzone-label style="outline: none">
+          <span *ngIf="dialogProps.isEditMode">
+            Ссылка на картинку: {{ dialogProps.post?.imagePath }}
+          </span>
           <span *ngIf="!dialogProps.isEditMode">Перетащите картинку!</span>
         </ngx-dropzone-label>
         <ngx-dropzone-preview

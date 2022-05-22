@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -42,6 +42,8 @@ import { environment } from '../environments/environment';
 import { WebsocketService } from './services/websocket.service';
 import { ChatService } from './services/chat.service';
 import { ErrorInterceptor } from './common/interceptors/error.interceptor';
+import { appInitializer } from './common/helpers/app.initializer';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import { ErrorInterceptor } from './common/interceptors/error.interceptor';
     GuidelineComponent,
     PostFormComponent,
     SubscriptionsComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,6 +93,7 @@ import { ErrorInterceptor } from './common/interceptors/error.interceptor';
     MatBottomSheet,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService] },
     WebsocketService,
     ChatService,
   ],

@@ -14,7 +14,6 @@ import { PostDto } from '../../common/dtos/post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { JwtAccessAuthGuard } from '../auth/guards/jwt-access-auth.guard';
-import { Like } from '../../common/models/likes.model';
 
 @Controller('posts')
 export class PostsController {
@@ -56,5 +55,11 @@ export class PostsController {
     @Param('postId') postId: string,
     @Query('ownerId') ownerId: string): Promise<void> {
     await this.postService.dislike(Number(postId), Number(ownerId));
+  }
+
+  @Delete('/:postId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async delete(@Param('postId') postId: string): Promise<void> {
+    await this.postService.delete(Number(postId));
   }
 }

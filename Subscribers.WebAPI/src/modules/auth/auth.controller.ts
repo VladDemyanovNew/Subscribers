@@ -36,13 +36,14 @@ export class AuthController {
     return await this.authService.signup(authSignupData, avatar);
   }
 
-  @UseGuards(JwtAccessAuthGuard)
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
   public async logout(@GetJwtAccessPayload() jwtPayload: JwtPayload): Promise<void> {
+    console.log(jwtPayload);
     await this.authService.logout(jwtPayload.sub);
   }
 
+  @Public()
   @UseGuards(JwtRefreshAuthGuard)
   @Post('/refresh')
   @HttpCode(HttpStatus.OK)

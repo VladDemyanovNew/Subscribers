@@ -8,6 +8,9 @@ import { JwtPayload } from '../../services/models/jwt-payload';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Comment } from '../../services/models/comment';
 import { Like } from '../../services/models/like';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 type FeedItem = {
   isComments: boolean,
@@ -29,12 +32,17 @@ export class FeedComponent implements OnInit {
 
   public currentUser: JwtPayload | null;
 
+  public form: FormGroup = new FormGroup({
+    message: new FormControl(undefined),
+  });
+
   constructor(
     private postService: PostService,
     private itemManagementService: ItemManagementService,
     private snackBar: MatSnackBar,
     private commentService: CommentService,
     private authenticationService: AuthenticationService,
+    public dialog: MatDialog,
   ) {
     this.currentUser = this.authenticationService.currentUserDecoded;
   }
@@ -43,7 +51,7 @@ export class FeedComponent implements OnInit {
     this.isLoading = true;
     this.loadPosts(3, 0);
     this.itemManagementService.createPostItem$.subscribe(post => {
-      this.posts.unshift(<FeedItem> { post: post, isComments: false });
+      this.posts.unshift(<FeedItem>{ post: post, isComments: false });
     });
   }
 
@@ -51,7 +59,7 @@ export class FeedComponent implements OnInit {
     this.postService.getAll(take, skip)
       .subscribe({
         next: posts => {
-          this.posts = this.posts.concat(posts.map(x => <FeedItem> { post: x, isComments: false }));
+          this.posts = this.posts.concat(posts.map(x => <FeedItem>{ post: x, isComments: false }));
           this.isLoading = false;
         },
         error: () => {
@@ -78,7 +86,7 @@ export class FeedComponent implements OnInit {
 
   public sendComment(post: Post, message: string): void {
     const currentUserId = Number(this.currentUser?.sub);
-    const commentCreateData = <Comment> {
+    const commentCreateData = <Comment>{
       ownerId: currentUserId,
       postId: post.id,
       message: message,
@@ -88,8 +96,9 @@ export class FeedComponent implements OnInit {
       .subscribe({
         next: comment => {
           post.comments?.push(comment);
+          this.form.reset();
           this.snackBar.open(
-            'Ваш комментарий отправлен',
+            'Спасибо за ваш комментарий!',
             'Close',
             { duration: 3000 },
           );
@@ -112,7 +121,7 @@ export class FeedComponent implements OnInit {
     this.postService.like(post.id, Number(this.currentUser?.sub))
       .subscribe({
         next: () => {
-          post.likes?.push(<Like> { postId: post.id, ownerId: this.currentUser?.sub });
+          post.likes?.push(<Like>{ postId: post.id, ownerId: this.currentUser?.sub });
         },
       });
   }
@@ -122,11 +131,48 @@ export class FeedComponent implements OnInit {
       .subscribe({
         next: () => {
           const likeIndex = post.likes?.findIndex(like => like.ownerId === this.currentUser?.sub);
-          console.log(likeIndex);
           if (likeIndex !== undefined) {
             post.likes?.splice(likeIndex, 1);
           }
         },
       });
+  }
+
+  public openDeletePostDialog(feedItem: FeedItem): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '20rem',
+      data: {
+        dialogName: 'Удаление поста',
+        message: 'Вы действительно хотите удалить этот пост?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.deletePost(feedItem.post.id);
+      }
+    });
+  }
+
+  private deletePost(postId: number): void {
+    this.postService.delete(postId)
+      .subscribe({
+        next: () => {
+          const postIndex = this.posts.findIndex(post => post.post.id === postId);
+          this.posts.splice(postIndex, 1);
+        },
+        error: () => {
+          this.snackBar.open(
+            'При удалении поста возникла ошибка',
+            'Close',
+            { duration: 3000 },
+          );
+        },
+      });
+  }
+
+  public canUserDeletePost(feedItem: FeedItem): boolean {
+    return this.authenticationService.isAdmin ||
+      feedItem.post.ownerId === this.authenticationService.currentUserDecoded?.sub
   }
 }

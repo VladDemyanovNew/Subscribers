@@ -73,7 +73,6 @@ export class SignupComponent implements OnInit {
       .subscribe({
         next: (response: Tokens) => {
           this.isLoading = false;
-          this.authenticationService.currentUserValue = response;
           this.router?.navigate(['/posts']);
         },
         error: (error: ErrorResponse) => {

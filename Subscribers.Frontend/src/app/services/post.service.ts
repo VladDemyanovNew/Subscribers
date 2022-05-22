@@ -33,4 +33,8 @@ export class PostService {
   public dislike(postId: number, ownerId: number): Observable<void> {
     return this.http.delete<void>(`${ ApiEndpoints.Posts }/${ postId }/likes?ownerId=${ ownerId }`);
   }
+
+  public delete(postId: number): Observable<void> {
+    return this.http.delete<void>(`${ ApiEndpoints.Posts }/${ postId }`);
+  }
 }

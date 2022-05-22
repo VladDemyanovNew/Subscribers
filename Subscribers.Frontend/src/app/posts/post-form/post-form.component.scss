@@ -1,9 +1,5 @@
 @import '../../../styles/variables.scss';
 
-::ng-deep .mat-dialog-container {
-  background: $secondary-color;
-}
-
 .submit-btn {
   background: forestgreen;
   color: white;
