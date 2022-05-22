@@ -43,7 +43,7 @@ export class JwtAccessAuthGuard extends AuthGuard('jwt') {
       secret: process.env.AT_SECRET_KEY,
     }) as JwtPayload;
 
-    const areRolesValid = payload.roles.some(role => requiredRoles.includes(role.name as RoleName))
+    const areRolesValid = payload.roles.some(role => requiredRoles.includes(role.name as RoleName));
     return areRolesValid && canActivate;
   }
 }

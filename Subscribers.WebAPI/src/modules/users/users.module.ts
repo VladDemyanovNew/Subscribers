@@ -9,6 +9,7 @@ import { RolesModule } from '../roles/roles.module';
 import { AuthModule } from '../auth/auth.module';
 import { Subscription } from '../../common/models/subscriptions.model';
 import { ChatsModule } from '../chats/chats.module';
+import { CaslModule } from '../casl/casl.module';
 
 @Module({
   controllers: [UsersController],
@@ -23,6 +24,7 @@ import { ChatsModule } from '../chats/chats.module';
     RolesModule,
     forwardRef(() => AuthModule),
     ChatsModule,
+    CaslModule,
   ],
   exports: [UsersService],
 })

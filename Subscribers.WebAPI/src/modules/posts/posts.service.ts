@@ -1,4 +1,12 @@
-import { BadRequestException, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Scope
+} from '@nestjs/common';
 import { Post } from '../../common/models/posts.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { PostDto } from '../../common/dtos/post.dto';
@@ -10,6 +18,8 @@ import { Express } from 'express';
 import { User } from '../../common/models/users.model';
 import { Like } from '../../common/models/likes.model';
 import { Comment } from '../../common/models/comments.model';
+import { CaslAbilityFactory } from '../casl/casl-ability.factory';
+import { Action } from '../../common/enums/action';
 
 @Injectable()
 export class PostsService {
@@ -20,7 +30,8 @@ export class PostsService {
     @InjectModel(Like)
     private likeModel: typeof Like,
     private userService: UsersService,
-    private dropboxService: DropboxService) {
+    private dropboxService: DropboxService,
+    private caslAbilityFactory: CaslAbilityFactory) {
   }
 
   public async getAll(): Promise<PostDto[]> {
@@ -132,11 +143,20 @@ export class PostsService {
   }
 
   public async delete(postId: number): Promise<void> {
-    const doesPostExist = !isNil(await this.postModel.findByPk(postId));
-    if (!doesPostExist) {
+    const post = await this.postModel.findByPk(postId);
+    if (!post) {
       throw new HttpException(
         `Can't delete post with id=${ postId }, because it doesn't exist`,
         HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const currentUser = await this.userService.getCurrentUser();
+    const abilities = this.caslAbilityFactory.createForUser(currentUser);
+    const canActivate = abilities.can(Action.Delete, post);
+    if (!canActivate) {
+      throw new ForbiddenException(
+        `Can't delete post with id=${ postId }, because user hasn't permissions.`,
       );
     }
 

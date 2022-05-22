@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ExecutionContext, HttpException, HttpStatus, Inject, Injectable, Scope } from '@nestjs/common';
 import { User } from '../../common/models/users.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { RolesService } from '../roles/roles.service';
@@ -12,8 +12,11 @@ import { Queries } from '../../common/sql/queries';
 import { parseUserToDto } from '../../common/helpers/user.helper';
 import { Op, QueryTypes } from 'sequelize';
 import { getNRandomElements } from '../../common/helpers/array.helper';
+import { JwtRefreshPayload } from '../../common/types/jwt-refresh-payload.type';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class UsersService {
 
   constructor(
@@ -23,6 +26,7 @@ export class UsersService {
     private subscriptionsModel: typeof Subscription,
     private roleService: RolesService,
     private sequelize: Sequelize,
+    @Inject(REQUEST) private request: Request,
   ) {
   }
 
@@ -146,5 +150,10 @@ export class UsersService {
     }
 
     await this.subscriptionsModel.destroy({ where: { subscriberId: subscriberId, ownerId: ownerId } });
+  }
+
+  public async getCurrentUser(): Promise<User> {
+    const payload = this.request.user as JwtRefreshPayload;
+    return await this.findById(payload.sub);
   }
 }

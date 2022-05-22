@@ -16,12 +16,14 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { RoleName } from '../../common/enums/role-name';
 import { SubscriptionParamDto } from '../../common/dtos/subscription-param.dto';
 import { UserDto } from '../../common/dtos/user.dto';
+import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 
 @Controller('users')
 export class UsersController {
 
   constructor(
     private readonly usersService: UsersService,
+    private caslAbilityFactory: CaslAbilityFactory,
   ) {
   }
 
@@ -71,5 +73,13 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   public async unsubscribe(@Param() params: SubscriptionParamDto): Promise<void> {
     await this.usersService.unsubscribe(params.ownerId, params.subscriberId);
+  }
+
+  @Get(':userId/abilities')
+  @HttpCode(HttpStatus.OK)
+  public async getUserAbility(@Param('userId') userId: number) {
+    const user = await this.usersService.findById(userId);
+    const abilities = this.caslAbilityFactory.createForUser(user);
+    return abilities.rules;
   }
 }

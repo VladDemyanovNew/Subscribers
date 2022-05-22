@@ -39,7 +39,6 @@ export class AuthController {
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
   public async logout(@GetJwtAccessPayload() jwtPayload: JwtPayload): Promise<void> {
-    console.log(jwtPayload);
     await this.authService.logout(jwtPayload.sub);
   }
 

@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { DropboxModule } from '../dropbox/dropbox.module';
 import { AuthModule } from '../auth/auth.module';
 import { Like } from '../../common/models/likes.model';
+import { CaslModule } from '../casl/casl.module';
 
 @Module({
   controllers: [PostsController],
@@ -16,6 +17,7 @@ import { Like } from '../../common/models/likes.model';
     UsersModule,
     DropboxModule,
     forwardRef(() => AuthModule),
+    CaslModule,
   ],
   exports: [PostsService],
 })
