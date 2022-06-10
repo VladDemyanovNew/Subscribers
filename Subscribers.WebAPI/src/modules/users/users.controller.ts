@@ -17,6 +17,9 @@ import { RoleName } from '../../common/enums/role-name';
 import { SubscriptionParamDto } from '../../common/dtos/subscription-param.dto';
 import { UserDto } from '../../common/dtos/user.dto';
 import { CaslAbilityFactory } from '../casl/casl-ability.factory';
+import { Public } from '../../common/decorators/public.decorator';
+import { GetJwtAccessPayload } from '../../common/decorators/access-token.decorator';
+import { JwtPayload } from '../../common/types/jwt-payload.type';
 
 @Controller('users')
 export class UsersController {
@@ -51,18 +54,6 @@ export class UsersController {
     return await this.usersService.getRecommendationsForSubscribe(userId);
   }
 
-  @Roles(RoleName.ADMIN)
-  @UseGuards(JwtAccessAuthGuard)
-  @Get(':username')
-  @HttpCode(HttpStatus.OK)
-  public async findOne(@Param('username') username: string): Promise<User> {
-    const user: User = await this.usersService.findByEmail(username);
-    if (!user) {
-      throw new BadRequestException(`User with username=${ username } doesnt exist`);
-    }
-    return user;
-  }
-
   @Post(':ownerId/subscribers/:subscriberId')
   @HttpCode(HttpStatus.NO_CONTENT)
   public async subscribe(@Param() params: SubscriptionParamDto): Promise<void> {
@@ -75,10 +66,11 @@ export class UsersController {
     await this.usersService.unsubscribe(params.ownerId, params.subscriberId);
   }
 
-  @Get(':userId/abilities')
+  @Public()
+  @Get('/abilities')
   @HttpCode(HttpStatus.OK)
-  public async getUserAbility(@Param('userId') userId: number) {
-    const user = await this.usersService.findById(userId);
+  public async getUserAbility() {
+    const user = await this.usersService.getCurrentUser();
     const abilities = this.caslAbilityFactory.createForUser(user);
     return abilities.rules;
   }

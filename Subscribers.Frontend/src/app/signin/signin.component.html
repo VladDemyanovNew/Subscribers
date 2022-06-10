@@ -23,7 +23,7 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Пароль</mat-label>
-        <input matInput type="password" formControlName="password">
+        <input autocomplete="off" matInput type="password" formControlName="password">
         <mat-error *ngIf="formGroup.controls['password'].hasError('required')">
           Поле обязательно для заполнения
         </mat-error>

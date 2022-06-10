@@ -15,6 +15,8 @@ import { getNRandomElements } from '../../common/helpers/array.helper';
 import { JwtRefreshPayload } from '../../common/types/jwt-refresh-payload.type';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
+import { JwtPayload } from '../../common/types/jwt-payload.type';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UsersService {
@@ -27,6 +29,7 @@ export class UsersService {
     private roleService: RolesService,
     private sequelize: Sequelize,
     @Inject(REQUEST) private request: Request,
+    private jwtService: JwtService,
   ) {
   }
 
@@ -152,8 +155,20 @@ export class UsersService {
     await this.subscriptionsModel.destroy({ where: { subscriberId: subscriberId, ownerId: ownerId } });
   }
 
-  public async getCurrentUser(): Promise<User> {
-    const payload = this.request.user as JwtRefreshPayload;
+  public async getCurrentUser(): Promise<User | null> {
+    const token = this.request.get('authorization')
+      ?.replace('Bearer', '')
+      .trim();
+    if (!token) {
+      return null;
+    }
+
+    const payload = this.jwtService.verify(token, {
+      secret: process.env.AT_SECRET_KEY,
+    }) as JwtPayload;
+    if (!payload) {
+      return null;
+    }
     return await this.findById(payload.sub);
   }
 }
